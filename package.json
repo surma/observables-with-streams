@@ -1,0 +1,19 @@
+{
+  "name": "observables-with-streams",
+  "version": "0.0.1",
+  "description": "A library of observables built with streams",
+  "scripts": {
+    "test": "karma start",
+    "testserver": "karma start --no-single-run"
+  },
+  "author": "Surma <surma@surma.link>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "karma": "^2.0.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "mocha": "^5.0.5"
+  }
+}
