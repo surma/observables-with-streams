@@ -10,12 +10,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {countUp, map, take} from '../ows.js';
-import {readAll} from './utils.js';
+import { fromIterable } from "../ows.js";
 
-describe('map()', function () {
-  it('applies a function to each item', async function () {
-    const o = countUp().pipeThrough(map(i => i * 2)).pipeThrough(take(4));
-    expect(await readAll(o)).to.deep.equal([0, 2, 4, 6]);
+Mocha.describe("fromIterable()", function() {
+  Mocha.it("emits all items", async function() {
+    const observable = fromIterable([1, 2]);
+    const reader = observable.getReader();
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 1,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 2,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: undefined,
+      done: true
+    });
   });
 });

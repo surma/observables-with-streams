@@ -10,19 +10,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {from, delay} from '../ows.js';
+import { fromIterable, collect } from "../ows.js";
 
-describe('delay()', function () {
-  it('delays items but a fixed amount of time', async function () {
-    const {port1, port2} = new MessageChannel();
-    const o = from(port2, 'message').pipeThrough(delay(100));
-    port2.start();
-    const r = o.getReader();
-
-    let timestamp = performance.now();
-    port1.postMessage('ohai');
-    await r.read();
-    const delta = performance.now() - timestamp;
-    expect(delta - 100).to.be.lessThan(10);
+Mocha.describe("collect()", function() {
+  Mocha.it("returns all items with an array", async function() {
+    const iterable = [1, 2, 3, 4];
+    const collection = await collect(fromIterable(iterable));
+    chai.expect(collection).to.deep.equal(iterable);
   });
 });

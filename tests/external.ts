@@ -10,12 +10,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {countUp, take, takeLast} from '../ows.js';
-import {readAll} from './utils.js';
+import { external, EOF } from "../ows.js";
 
-describe('takeLast()', function () {
-  it('takes the last n items', async function () {
-    const o = countUp().pipeThrough(take(10)).pipeThrough(takeLast(4));
-    expect(await readAll(o)).to.deep.equal([6, 7, 8, 9]);
+Mocha.describe("external()", function() {
+  Mocha.it("emits when next() is called", async function() {
+    const { observable, next } = external<number>();
+    next(1);
+    next(2);
+    next(EOF);
+    const reader = observable.getReader();
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 1,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 2,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: undefined,
+      done: true
+    });
   });
 });

@@ -10,12 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {countUp, skipLast, take} from '../ows.js';
-import {readAll} from './utils.js';
+import { fromIterable, bufferWithCount, collect } from "../ows.js";
 
-describe('skip()', function () {
-  it('skips the first n items', async function () {
-    const o = countUp().pipeThrough(take(10)).pipeThrough(skipLast(6));
-    expect(await readAll(o)).to.deep.equal([0, 1, 2, 3]);
+Mocha.describe("bufferWithCount()", function() {
+  Mocha.it("splits the stream into chunks", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 3, 4, 5]).pipeThrough(bufferWithCount(2))
+    );
+
+    chai.expect(list).to.deep.equal([[1, 2], [3, 4], [5]]);
   });
 });

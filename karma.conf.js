@@ -13,44 +13,27 @@
 
 module.exports = function(config) {
   const configuration = {
-      basePath: '',
-      frameworks: ['mocha', 'chai'],
-      files: [
-        {
-          pattern: 'ows.js',
-          included: false,
-        },
-        {
-          pattern: 'tests/utils.js',
-          included: false,
-        },
-        {
-          pattern: 'tests/*.js',
-          type: 'module',
-        },
-      ],
-      reporters: ['progress'],
-      port: 9876,
-      colors: true,
-      logLevel: config.LOG_INFO,
-      autoWatch: true,
-      singleRun: true,
-      concurrency: Infinity,
-      browsers: ['DockerChrome'],
-      // Remove these 2 lines once this PR lands
-      // https://github.com/karma-runner/karma/pull/2834
-      customContextFile: 'tests/context.html',
-      customDebugFile: 'tests/debug.html',
-      customLaunchers: {
-        DockerChrome: {
-            base: 'ChromeCanaryHeadless',
-            flags: ['--no-sandbox', '--enable-experimental-web-platform-features'],
-        },
+    basePath: ".",
+    frameworks: ["mocha", "chai"],
+    files: [
+      {
+        pattern: "dist/tests/*.js",
+        type: "module"
       },
-    };
+      {
+        pattern: "dist/*.js",
+        included: false
+      }
+    ],
+    reporters: ["progress"],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    singleRun: true,
+    concurrency: Infinity,
+    browsers: ["ChromeCanaryHeadless"]
+  };
 
-    if (process.env.INSIDE_DOCKER)
-      configuration.browsers = ['DockerChrome'];
-
-    config.set(configuration);
+  config.set(configuration);
 };

@@ -10,12 +10,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {countUp, take} from '../ows.js';
-import {readAll} from './utils.js';
+import { fromIterable, forEach, collect } from "../ows.js";
 
-describe('take()', function () {
-  it('takes the first n items', async function () {
-    const o = countUp().pipeThrough(take(4));
-    expect(await readAll(o)).to.deep.equal([0, 1, 2, 3]);
+Mocha.describe("forEach()", function() {
+  Mocha.it("executes", async function() {
+    const iterable = [1, 2, 3];
+    let callCount = 0;
+    const list = await collect(
+      fromIterable(iterable).pipeThrough(
+        forEach(x => {
+          callCount++;
+          return x + 1;
+        })
+      )
+    );
+
+    chai.expect(list).to.deep.equal(iterable);
+    chai.expect(callCount).to.equal(iterable.length);
   });
 });

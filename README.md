@@ -1,4 +1,5 @@
 # Observables with Streams
+
 A collection of observables built with streams.
 
 This library is inspired by [ReactiveX’s operators](http://reactivex.io/documentation/operators.html) and implements a subset of them using [streams](https://streams.spec.whatwg.org).
@@ -10,4 +11,5 @@ While most browsers have [partial support of streams](https://caniuse.com/#feat=
 For a good primer about streams, read this [blog post](https://jakearchibald.com/2016/streams-ftw/) by [Jake Archibald](https://twitter.com/jaffathecake/) (he is aware the title hasn’t aged well).
 
 ---
+
 License Apache 2.0

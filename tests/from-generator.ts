@@ -10,19 +10,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {from} from '../ows.js';
+import { fromGenerator } from "../ows.js";
 
-describe('from()', function () {
-  it('turns events into a stream', function (done) {
-    const {port1, port2} = new MessageChannel();
-    from(port2, 'message')
-      .getReader()
-      .read()
-      .then(({value}) => {
-        expect(value.data).to.equal('ohai');
-        done();
-      });
-    port2.start();
-    port1.postMessage('ohai');
+Mocha.describe("fromGenerator()", function() {
+  Mocha.it("works with generators", async function() {
+    const observable = fromGenerator(function*() {
+      yield 1;
+      yield 2;
+    });
+    const reader = observable.getReader();
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 1,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 2,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: undefined,
+      done: true
+    });
   });
 });

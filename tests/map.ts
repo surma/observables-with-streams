@@ -10,16 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {timer, map, merge, delay, take} from '../ows.js';
-import {readAll} from './utils.js';
+import { fromIterable, map, collect } from "../ows.js";
 
-describe('merge()', function () {
-  it('merges multiple observables into one', async function () {
-    const [o1, o2] = timer(10).tee();
-    const o = merge(
-      o1.pipeThrough(map(_ => 'o1')),
-      o2.pipeThrough(map(_ => 'o2')).pipeThrough(delay(3)),
-    ).pipeThrough(take(6));
-    expect(await readAll(o)).to.deep.equal(['o1', 'o2', 'o1', 'o2', 'o1', 'o2']);
+Mocha.describe("map()", function() {
+  Mocha.it("maps each item", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 3]).pipeThrough(map(async x => x + 1))
+    );
+
+    chai.expect(list).to.deep.equal([2, 3, 4]);
   });
 });

@@ -10,12 +10,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {countUp, skip, take} from '../ows.js';
-import {readAll} from './utils.js';
+import { fromIterable, zipWith, collect } from "../ows.js";
 
-describe('skip()', function () {
-  it('skips the first n items', async function () {
-    const o = countUp().pipeThrough(skip(4)).pipeThrough(take(4));
-    expect(await readAll(o)).to.deep.equal([4, 5, 6, 7]);
+Mocha.describe("zipWith()", function() {
+  Mocha.it("combines 2 observables", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 3]).pipeThrough(
+        zipWith(fromIterable(["a", "b", "c", "d"]))
+      )
+    );
+
+    chai.expect(list).to.deep.equal([[1, "a"], [2, "b"], [3, "c"]]);
   });
 });

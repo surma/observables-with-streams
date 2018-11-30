@@ -10,16 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {timer} from '../ows.js';
+import { fromIterable, filter, collect } from "../ows.js";
 
-describe('timer()', function () {
-  it('sends items in regular intervals', async function () {
-    const o = timer(100);
-    const r = o.getReader();
-    await r.read();
-    const timestamp = performance.now();
-    await r.read();
-    const delta = performance.now() - timestamp;
-    expect(delta - 100).to.be.lessThan(10);
+Mocha.describe("filter()", function() {
+  Mocha.it("removes items that don’t match the predicate", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 3, 4]).pipeThrough(filter(x => x % 2 === 0))
+    );
+
+    chai.expect(list).to.deep.equal([2, 4]);
   });
 });

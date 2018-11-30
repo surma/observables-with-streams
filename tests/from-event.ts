@@ -10,12 +10,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {repeat, take} from '../ows.js';
-import {readAll} from './utils.js';
+import { fromEvent, EOF } from "../ows.js";
 
-describe('repeat()', function () {
-  it('repeats an item', async function () {
-    const o = repeat('ohai').pipeThrough(take(4));
-    expect(await readAll(o)).to.deep.equal(['ohai', 'ohai', 'ohai', 'ohai']);
+Mocha.describe("fromEvent()", function() {
+  Mocha.it("emits on events", async function() {
+    const { port1, port2 } = new MessageChannel();
+    const observable = fromEvent<MessagePort, MessageEvent>(port2, "message");
+    port2.start();
+    port1.postMessage(1);
+    port1.postMessage(2);
+    const reader = observable.getReader();
+    let msg;
+    msg = (await reader.read()).value;
+    chai.expect(msg.data).to.equal(1);
+    msg = (await reader.read()).value;
+    chai.expect(msg.data).to.equal(2);
   });
 });
