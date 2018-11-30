@@ -93,6 +93,47 @@ export function zipWith<S, T>(other: Observable<T>): Transform<S, [S, T]> {
   });
 }
 
+export function mergeWith<S, T>(other: Observable<T>): Transform<S, S | T> {
+  let rscResolver: (rsc: ReadableStreamDefaultController) => void;
+  const rsc = new Promise<ReadableStreamDefaultController>(
+    resolve => (rscResolver = resolve)
+  );
+
+  const closedStreams = new Set();
+  function closeSink() {
+    return new WritableStream({
+      async close() {
+        closedStreams.add(this);
+        if (closedStreams.size === 2) {
+          (await rsc).close();
+        }
+      }
+    });
+  }
+
+  async function close() {
+    (await rsc).close();
+  }
+
+  function forwardToRsc<Q extends S | T>(r: ReadableStream<Q>) {
+    r.pipeThrough(map(async chunk => (await rsc).enqueue(chunk))).pipeTo(
+      closeSink()
+    );
+  }
+
+  const ts = new TransformStream();
+  forwardToRsc(ts.readable);
+  forwardToRsc(other);
+  return {
+    writable: ts.writable,
+    readable: new ReadableStream({
+      start(controller) {
+        rscResolver(controller);
+      }
+    })
+  };
+}
+
 export function combineLatestWith<S, T>(
   other: Observable<T>
 ): Transform<S, [S, T]> {
