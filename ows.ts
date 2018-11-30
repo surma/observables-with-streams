@@ -14,11 +14,11 @@
 export type Observable<T> = ReadableStream<T>;
 export type Transform<S, T = S> = TransformStream<S, T>;
 
-export type NextFunc<T> = (v: T) => void;
-
 export const EOF = Symbol();
+export type NextFunc<T> = (v: T | typeof EOF) => void;
+
 export function external<T>() {
-  let next: (v: T | typeof EOF) => void;
+  let next: NextFunc<T>;
   const observable = new ReadableStream<T>({
     async start(controller) {
       next = (v: T | typeof EOF) => {
