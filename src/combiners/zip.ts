@@ -11,5 +11,21 @@
  * limitations under the License.
  */
 
-export * from "./merge.js";
-export * from "./zip.js";
+import { Observable } from "../types.js";
+
+export function zip<T>(...os: Array<Observable<T>>): Observable<T[]> {
+  return new ReadableStream<T[]>({
+    async start(controller) {
+      const readers = os.map(o => o.getReader());
+      while (true) {
+        const values = await Promise.all(readers.map(r => r.read()));
+        if (values.some(({ done }) => done)) {
+          break;
+        }
+        controller.enqueue(values.map(({ value }) => value));
+      }
+      readers.forEach(r => r.releaseLock());
+      controller.close();
+    }
+  });
+}
