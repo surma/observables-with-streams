@@ -11,10 +11,12 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./repeat.js";
+import { Observable } from "../types.js";
+
+export function repeat<T>(v: T): Observable<T> {
+  return new ReadableStream<T>({
+    pull(controller) {
+      controller.enqueue(v);
+    }
+  });
+}

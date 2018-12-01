@@ -10,11 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { repeat, fromIterable, zipWith, collect } from "../../src/index.js";
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./repeat.js";
+Mocha.describe("repeat()", function() {
+  Mocha.it("repeats the same value infinitely", async function() {
+    const list = await collect(
+      repeat("hai").pipeThrough(zipWith(fromIterable([1, 2, 3])))
+    );
+    chai.expect(list).to.deep.equal([["hai", 1], ["hai", 2], ["hai", 3]]);
+  });
+});
