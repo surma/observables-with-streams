@@ -22,8 +22,9 @@ Mocha.describe("combineLatest()", function() {
       const { observable: o3, next: n3 } = external<number>();
 
       const list = collect(
-        combineLatest(o1, o2, o3)
-          .pipeThrough(map(async ([a, b, c]) => a + b + c))
+        combineLatest(o1, o2, o3).pipeThrough(
+          map(async ([a, b, c]) => a + b + c)
+        )
       );
 
       const steps = [

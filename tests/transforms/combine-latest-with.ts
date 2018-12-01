@@ -29,7 +29,8 @@ Mocha.describe("combineLatestWith()", function() {
       () => n1(2),
       () => n1(3),
       () => n1(EOF),
-      () => n2("3")
+      () => n2("3"),
+      () => n2(EOF)
     ];
 
     for (const step of steps) {
@@ -39,6 +40,13 @@ Mocha.describe("combineLatestWith()", function() {
 
     chai
       .expect(await list)
-      .to.deep.equal([[1, "0"], [1, "1"], [1, "2"], [2, "2"], [3, "2"]]);
+      .to.deep.equal([
+        [1, "0"],
+        [1, "1"],
+        [1, "2"],
+        [2, "2"],
+        [3, "2"],
+        [3, "3"]
+      ]);
   });
 });

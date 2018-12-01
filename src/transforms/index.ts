@@ -12,7 +12,7 @@
  */
 
 export * from "./buffer-with-count.js";
-export * from "./combine-with-latest.js";
+export * from "./combine-latest-with.js";
 export * from "./filter.js";
 export * from "./for-each.js";
 export * from "./map.js";

@@ -12,39 +12,14 @@
  */
 
 import { Transform, Observable } from "../types.js";
+import { combineLatest } from "../combiners/combine-latest.js";
 
 export function combineLatestWith<S, T>(
   other: Observable<T>
 ): Transform<S, [S, T]> {
-  const writtenStreams = new Set();
-  const latestValue: [S, T] = [0, 0] as any;
-  let rscResolver: (rsc: ReadableStreamDefaultController) => void;
-  const rsc = new Promise<ReadableStreamDefaultController>(
-    resolve => (rscResolver = resolve)
-  );
-
-  function keepLatest(index: number) {
-    return new WritableStream({
-      async write(chunk) {
-        writtenStreams.add(this);
-        latestValue[index] = chunk;
-        if (writtenStreams.size === 2) {
-          (await rsc).enqueue([...latestValue]);
-        }
-      },
-      async close() {
-        (await rsc).close();
-      }
-    });
-  }
-
-  other.pipeTo(keepLatest(1));
+  const { readable, writable } = new TransformStream<S, S>();
   return {
-    writable: keepLatest(0),
-    readable: new ReadableStream({
-      start(controller) {
-        rscResolver(controller);
-      }
-    })
+    writable,
+    readable: combineLatest(readable, other as any) as any
   };
 }
