@@ -62,6 +62,12 @@ export function fromGenerator<T>(it: GeneratorFunc<T>): Observable<T> {
   return observable;
 }
 
+export function fromTimer(ms: number): Observable<null> {
+  const { next, observable } = external<null>();
+  setInterval(next, ms);
+  return observable;
+}
+
 export function filter<T>(f: (x: T) => boolean): Transform<T> {
   return new TransformStream<T, T>({
     transform(chunk, controller) {
