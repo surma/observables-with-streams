@@ -10,12 +10,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { range, collect } from "../../src/index.js";
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./range.js";
-export * from "./repeat.js";
+Mocha.describe("range()", function() {
+  Mocha.it("emits a series of integers", async function() {
+    const list = await collect(range(-2, 2));
+    chai.expect(list).to.deep.equal([-2, -1, 0, 1, 2]);
+  });
+
+  Mocha.it("can count backwards", async function() {
+    const list = await collect(range(2, -2));
+    chai.expect(list).to.deep.equal([2, 1, 0, -1, -2]);
+  });
+});

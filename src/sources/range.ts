@@ -11,11 +11,16 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./range.js";
-export * from "./repeat.js";
+import { Observable } from "../types.js";
+import { external, EOF } from "./external.js";
+
+export function range(start: number, end: number): Observable<number> {
+  const { observable, next } = external<number>();
+  const len = Math.abs(end - start);
+  const dir = Math.sign(end - start);
+  for (let i = 0; i <= len; i++) {
+    next(start + i * dir);
+  }
+  next(EOF);
+  return observable;
+}
