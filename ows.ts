@@ -106,7 +106,7 @@ export function mergeWith<S, T>(other: Observable<T>): Transform<S, S | T> {
   );
 
   const closedStreams = new Set();
-  function closeSink() {
+  function closeOutputStream() {
     return new WritableStream({
       async close() {
         closedStreams.add(this);
@@ -117,21 +117,17 @@ export function mergeWith<S, T>(other: Observable<T>): Transform<S, S | T> {
     });
   }
 
-  async function close() {
-    (await rsc).close();
-  }
-
   function forwardToRsc<Q extends S | T>(r: ReadableStream<Q>) {
     r.pipeThrough(map(async chunk => (await rsc).enqueue(chunk))).pipeTo(
-      closeSink()
+      closeOutputStream()
     );
   }
 
-  const ts = new TransformStream();
-  forwardToRsc(ts.readable);
+  const { readable, writable } = new TransformStream();
+  forwardToRsc(readable);
   forwardToRsc(other);
   return {
-    writable: ts.writable,
+    writable,
     readable: new ReadableStream({
       start(controller) {
         rscResolver(controller);
