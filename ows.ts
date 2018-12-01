@@ -197,6 +197,30 @@ export function forEach<T>(f: (x: T) => void): Transform<T> {
   });
 }
 
+export function take<T>(n: number): Transform<T> {
+  return new TransformStream<T, T>({
+    transform(chunk, controller) {
+      if (n > 0) {
+        controller.enqueue(chunk);
+      }
+      if (--n <= 0) {
+        controller.terminate();
+      }
+    }
+  });
+}
+
+export function takeWhile<T>(f: (v: T) => boolean): Transform<T> {
+  return new TransformStream<T, T>({
+    transform(chunk, controller) {
+      if (!f(chunk)) {
+        return controller.terminate();
+      }
+      controller.enqueue(chunk);
+    }
+  });
+}
+
 export function sink() {
   return new WritableStream();
 }
