@@ -11,29 +11,12 @@
  * limitations under the License.
  */
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
-
-  config.set(configuration);
-};
+export * from "./buffer-with-count.js";
+export * from "./combine-with-latest.js";
+export * from "./filter.js";
+export * from "./for-each.js";
+export * from "./map.js";
+export * from "./merge-with.js";
+export * from "./take-while.js";
+export * from "./take.js";
+export * from "./zip-with.js";

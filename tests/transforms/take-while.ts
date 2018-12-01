@@ -10,30 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable, takeWhile, collect } from "../../src/index.js";
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+Mocha.describe("take()", function() {
+  Mocha.it("takes the n first items", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 1, 3, 1, 1]).pipeThrough(takeWhile(i => i < 3))
+    );
 
-  config.set(configuration);
-};
+    chai.expect(list).to.deep.equal([1, 2, 1]);
+  });
+});

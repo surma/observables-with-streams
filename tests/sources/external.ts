@@ -10,17 +10,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromTimer, forEach, sink } from "../ows.js";
+import { external, EOF } from "../../src/index.js";
 
-Mocha.describe("fromTimer()", function() {
-  Mocha.it("emits null in the given interval", function(done) {
-    const observable = fromTimer(10);
-    let list: any[] = [];
-
-    observable.pipeThrough(forEach(v => list.push(v))).pipeTo(sink());
-    setTimeout(() => {
-      chai.expect(list).to.have.length(4);
-      done();
-    }, 40);
+Mocha.describe("external()", function() {
+  Mocha.it("emits when next() is called", async function() {
+    const { observable, next } = external<number>();
+    next(1);
+    next(2);
+    next(EOF);
+    const reader = observable.getReader();
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 1,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 2,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: undefined,
+      done: true
+    });
   });
 });

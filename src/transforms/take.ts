@@ -10,26 +10,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromGenerator } from "../ows.js";
 
-Mocha.describe("fromGenerator()", function() {
-  Mocha.it("works with generators", async function() {
-    const observable = fromGenerator(function*() {
-      yield 1;
-      yield 2;
-    });
-    const reader = observable.getReader();
-    chai.expect(await reader.read()).to.deep.equal({
-      value: 1,
-      done: false
-    });
-    chai.expect(await reader.read()).to.deep.equal({
-      value: 2,
-      done: false
-    });
-    chai.expect(await reader.read()).to.deep.equal({
-      value: undefined,
-      done: true
-    });
+import { Transform } from "../types.js";
+
+export function take<T>(n: number): Transform<T> {
+  return new TransformStream<T, T>({
+    transform(chunk, controller) {
+      if (n > 0) {
+        controller.enqueue(chunk);
+      }
+      if (--n <= 0) {
+        controller.terminate();
+      }
+    }
   });
-});
+}

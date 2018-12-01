@@ -10,12 +10,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, take, collect } from "../ows.js";
 
-Mocha.describe("take()", function() {
-  Mocha.it("takes the n first items", async function() {
-    const list = await collect(fromIterable([1, 2, 3, 4]).pipeThrough(take(2)));
+import { Observable } from "../types.js";
+import { external } from "./external.js";
 
-    chai.expect(list).to.deep.equal([1, 2]);
-  });
-});
+export function fromEvent<K extends EventTarget, T extends Event = Event>(
+  el: K,
+  name: string
+): Observable<T> {
+  const { next, observable } = external<T>();
+  el.addEventListener(name, next as any);
+  return observable;
+}

@@ -11,29 +11,15 @@
  * limitations under the License.
  */
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+import { Transform } from "../types.js";
 
-  config.set(configuration);
-};
+export function takeWhile<T>(f: (v: T) => boolean): Transform<T> {
+  return new TransformStream<T, T>({
+    transform(chunk, controller) {
+      if (!f(chunk)) {
+        return controller.terminate();
+      }
+      controller.enqueue(chunk);
+    }
+  });
+}

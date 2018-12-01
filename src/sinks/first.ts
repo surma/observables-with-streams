@@ -11,29 +11,14 @@
  * limitations under the License.
  */
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+import { Observable } from "../types.js";
 
-  config.set(configuration);
-};
+export async function first<T>(o: Observable<T>): Promise<T> {
+  const reader = o.getReader();
+  const { value, done } = await reader.read();
+  if (done) {
+    throw new Error("Observable finished without emitting any items");
+  }
+  reader.releaseLock();
+  return value;
+}

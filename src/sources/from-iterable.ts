@@ -11,29 +11,16 @@
  * limitations under the License.
  */
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+import { Observable } from "../types.js";
+import { external, EOF } from "./external.js";
 
-  config.set(configuration);
-};
+export function fromIterable<T>(
+  it: Iterable<T> | IterableIterator<T>
+): Observable<T> {
+  const { next, observable } = external<T>();
+  for (const v of it) {
+    next(v);
+  }
+  next(EOF);
+  return observable;
+}

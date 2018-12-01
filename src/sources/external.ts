@@ -11,29 +11,20 @@
  * limitations under the License.
  */
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+export const EOF = Symbol();
+export type NextFunc<T> = (v: T | typeof EOF) => void;
 
-  config.set(configuration);
-};
+export function external<T>() {
+  let next: NextFunc<T>;
+  const observable = new ReadableStream<T>({
+    async start(controller) {
+      next = (v: T | typeof EOF) => {
+        if (v === EOF) {
+          return controller.close();
+        }
+        controller.enqueue(v);
+      };
+    }
+  });
+  return { observable, next: next! };
+}

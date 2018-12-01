@@ -11,29 +11,22 @@
  * limitations under the License.
  */
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+import { Transform } from "../types.js";
 
-  config.set(configuration);
-};
+export function bufferWithCount<T>(count: number): Transform<T, T[]> {
+  let buffer: T[] = [];
+  return new TransformStream<T, T[]>({
+    async transform(chunk, controller) {
+      buffer.push(chunk);
+      if (buffer.length === count) {
+        controller.enqueue(buffer);
+        buffer = [];
+      }
+    },
+    flush(controller) {
+      if (buffer.length > 0) {
+        controller.enqueue(buffer);
+      }
+    }
+  });
+}

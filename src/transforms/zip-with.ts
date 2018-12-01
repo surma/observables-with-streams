@@ -10,26 +10,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { external, EOF } from "../ows.js";
 
-Mocha.describe("external()", function() {
-  Mocha.it("emits when next() is called", async function() {
-    const { observable, next } = external<number>();
-    next(1);
-    next(2);
-    next(EOF);
-    const reader = observable.getReader();
-    chai.expect(await reader.read()).to.deep.equal({
-      value: 1,
-      done: false
-    });
-    chai.expect(await reader.read()).to.deep.equal({
-      value: 2,
-      done: false
-    });
-    chai.expect(await reader.read()).to.deep.equal({
-      value: undefined,
-      done: true
-    });
+import { Transform, Observable } from "../types.js";
+
+export function zipWith<S, T>(other: Observable<T>): Transform<S, [S, T]> {
+  const reader = other.getReader();
+  return new TransformStream<S, [S, T]>({
+    async transform(chunk, controller) {
+      const { value, done } = await reader.read();
+      if (done) {
+        return controller.terminate();
+      }
+      controller.enqueue([chunk, value]);
+    }
   });
-});
+}

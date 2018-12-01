@@ -10,16 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, zipWith, collect } from "../ows.js";
+import { fromIterable, filter, collect } from "../../src/index.js";
 
-Mocha.describe("zipWith()", function() {
-  Mocha.it("combines 2 observables", async function() {
+Mocha.describe("filter()", function() {
+  Mocha.it("removes items that don’t match the predicate", async function() {
     const list = await collect(
-      fromIterable([1, 2, 3]).pipeThrough(
-        zipWith(fromIterable(["a", "b", "c", "d"]))
-      )
+      fromIterable([1, 2, 3, 4]).pipeThrough(filter(x => x % 2 === 0))
     );
 
-    chai.expect(list).to.deep.equal([[1, "a"], [2, "b"], [3, "c"]]);
+    chai.expect(list).to.deep.equal([2, 4]);
   });
 });

@@ -10,30 +10,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromEvent, EOF } from "../../src/index.js";
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
-
-  config.set(configuration);
-};
+Mocha.describe("fromEvent()", function() {
+  Mocha.it("emits on events", async function() {
+    const { port1, port2 } = new MessageChannel();
+    const observable = fromEvent<MessagePort, MessageEvent>(port2, "message");
+    port2.start();
+    port1.postMessage(1);
+    port1.postMessage(2);
+    const reader = observable.getReader();
+    let msg;
+    msg = (await reader.read()).value;
+    chai.expect(msg.data).to.equal(1);
+    msg = (await reader.read()).value;
+    chai.expect(msg.data).to.equal(2);
+  });
+});

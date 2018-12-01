@@ -10,30 +10,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable } from "../../src/index.js";
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
-
-  config.set(configuration);
-};
+Mocha.describe("fromIterable()", function() {
+  Mocha.it("emits all items", async function() {
+    const observable = fromIterable([1, 2]);
+    const reader = observable.getReader();
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 1,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 2,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: undefined,
+      done: true
+    });
+  });
+});

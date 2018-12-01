@@ -10,12 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, collect } from "../ows.js";
 
-Mocha.describe("collect()", function() {
-  Mocha.it("returns all items with an array", async function() {
-    const iterable = [1, 2, 3, 4];
-    const collection = await collect(fromIterable(iterable));
-    chai.expect(collection).to.deep.equal(iterable);
+import { Transform } from "../types.js";
+
+export function forEach<T>(f: (x: T) => void): Transform<T> {
+  return new TransformStream<T, T>({
+    async transform(chunk, controller) {
+      controller.enqueue(chunk);
+      f(chunk);
+    }
   });
-});
+}

@@ -10,30 +10,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable, zipWith, collect } from "../../src/index.js";
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+Mocha.describe("zipWith()", function() {
+  Mocha.it("combines 2 observables", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 3]).pipeThrough(
+        zipWith(fromIterable(["a", "b", "c", "d"]))
+      )
+    );
 
-  config.set(configuration);
-};
+    chai.expect(list).to.deep.equal([[1, "a"], [2, "b"], [3, "c"]]);
+  });
+});

@@ -11,29 +11,11 @@
  * limitations under the License.
  */
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+import { Observable } from "../types.js";
+import { external } from "./external.js";
 
-  config.set(configuration);
-};
+export function fromTimer(ms: number): Observable<null> {
+  const { next, observable } = external<null>();
+  setInterval(next, ms);
+  return observable;
+}

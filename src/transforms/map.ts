@@ -10,14 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, filter, collect } from "../ows.js";
 
-Mocha.describe("filter()", function() {
-  Mocha.it("removes items that don’t match the predicate", async function() {
-    const list = await collect(
-      fromIterable([1, 2, 3, 4]).pipeThrough(filter(x => x % 2 === 0))
-    );
+import { Transform } from "../types.js";
 
-    chai.expect(list).to.deep.equal([2, 4]);
+export function map<S, T>(f: (x: S) => Promise<T>): Transform<S, T> {
+  return new TransformStream<S, T>({
+    async transform(chunk, controller) {
+      controller.enqueue(await f(chunk));
+    }
   });
-});
+}

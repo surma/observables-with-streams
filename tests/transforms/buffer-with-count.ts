@@ -10,30 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable, bufferWithCount, collect } from "../../src/index.js";
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+Mocha.describe("bufferWithCount()", function() {
+  Mocha.it("splits the stream into chunks", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 3, 4, 5]).pipeThrough(bufferWithCount(2))
+    );
 
-  config.set(configuration);
-};
+    chai.expect(list).to.deep.equal([[1, 2], [3, 4], [5]]);
+  });
+});

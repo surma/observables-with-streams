@@ -10,30 +10,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable, forEach, collect } from "../../src/index.js";
 
-module.exports = function(config) {
-  const configuration = {
-    basePath: ".",
-    frameworks: ["mocha", "chai"],
-    files: [
-      {
-        pattern: "dist/tests/**/*.js",
-        type: "module"
-      },
-      {
-        pattern: "dist/src/**/*.js",
-        included: false
-      }
-    ],
-    reporters: ["progress"],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    singleRun: true,
-    concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
-  };
+Mocha.describe("forEach()", function() {
+  Mocha.it("executes", async function() {
+    const iterable = [1, 2, 3];
+    let callCount = 0;
+    const list = await collect(
+      fromIterable(iterable).pipeThrough(
+        forEach(x => {
+          callCount++;
+          return x + 1;
+        })
+      )
+    );
 
-  config.set(configuration);
-};
+    chai.expect(list).to.deep.equal(iterable);
+    chai.expect(callCount).to.equal(iterable.length);
+  });
+});

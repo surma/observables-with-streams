@@ -10,22 +10,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, forEach, collect } from "../ows.js";
+import { fromTimer, forEach, discard } from "../../src/index.js";
 
-Mocha.describe("forEach()", function() {
-  Mocha.it("executes", async function() {
-    const iterable = [1, 2, 3];
-    let callCount = 0;
-    const list = await collect(
-      fromIterable(iterable).pipeThrough(
-        forEach(x => {
-          callCount++;
-          return x + 1;
-        })
-      )
-    );
+Mocha.describe("fromTimer()", function() {
+  Mocha.it("emits null in the given interval", function(done) {
+    const observable = fromTimer(10);
+    let list: any[] = [];
 
-    chai.expect(list).to.deep.equal(iterable);
-    chai.expect(callCount).to.equal(iterable.length);
+    observable.pipeThrough(forEach(v => list.push(v))).pipeTo(discard());
+    setTimeout(() => {
+      chai.expect(list).to.have.length(4);
+      done();
+    }, 40);
   });
 });
