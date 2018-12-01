@@ -11,13 +11,25 @@
  * limitations under the License.
  */
 
-export * from "./buffer-with-count.js";
-export * from "./combine-latest-with.js";
-export * from "./distinct.js";
-export * from "./filter.js";
-export * from "./for-each.js";
-export * from "./map.js";
-export * from "./merge-with.js";
-export * from "./take-while.js";
-export * from "./take.js";
-export * from "./zip-with.js";
+import { Transform } from "../types.js";
+
+export function distinct<T>(
+  f: (a: T, b: T) => boolean = (a, b) => a === b
+): Transform<T> {
+  let last: T;
+  let hasLast = false;
+  return new TransformStream<T, T>({
+    transform(chunk, controller) {
+      if (!hasLast) {
+        last = chunk;
+        hasLast = true;
+        controller.enqueue(chunk);
+        return;
+      }
+      if (!f(chunk, last)) {
+        controller.enqueue(chunk);
+      }
+      last = chunk;
+    }
+  });
+}

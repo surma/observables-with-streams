@@ -10,14 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable, distinct, collect } from "../../src/index.js";
 
-export * from "./buffer-with-count.js";
-export * from "./combine-latest-with.js";
-export * from "./distinct.js";
-export * from "./filter.js";
-export * from "./for-each.js";
-export * from "./map.js";
-export * from "./merge-with.js";
-export * from "./take-while.js";
-export * from "./take.js";
-export * from "./zip-with.js";
+Mocha.describe("distinct()", function() {
+  Mocha.it("discards sequences of equal items", async function() {
+    const list = await collect(
+      fromIterable([1, 1, 2, 1, 2, 2, 2, 2, 3]).pipeThrough(distinct())
+    );
+
+    chai.expect(list).to.deep.equal([1, 2, 1, 2, 3]);
+  });
+});
