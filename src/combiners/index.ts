@@ -11,5 +11,6 @@
  * limitations under the License.
  */
 
+export * from "./combine-latest.js";
 export * from "./merge.js";
 export * from "./zip.js";
