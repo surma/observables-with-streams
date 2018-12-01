@@ -11,7 +11,23 @@
  * limitations under the License.
  */
 
-export * from "./combiners/index.js";
-export * from "./sources/index.js";
-export * from "./transforms/index.js";
-export * from "./sinks/index.js";
+import { Observable } from "../types.js";
+
+export function merge<T>(...os: Array<Observable<T>>): Observable<T> {
+  return new ReadableStream<T>({
+    async start(controller) {
+      const forwarders = os.map(async o => {
+        const reader = o.getReader();
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) {
+            return;
+          }
+          controller.enqueue(value);
+        }
+      });
+      await Promise.all(forwarders);
+      controller.close();
+    }
+  });
+}
