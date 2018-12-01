@@ -10,13 +10,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, map, collect } from "../../src/index.js";
+import { range, map, collect } from "../../src/index.js";
 
 Mocha.describe("map()", function() {
   Mocha.it("maps each item", async function() {
-    const list = await collect(
-      fromIterable([1, 2, 3]).pipeThrough(map(async x => x + 1))
-    );
+    const list = await collect(range(1, 3).pipeThrough(map(async x => x + 1)));
 
     chai.expect(list).to.deep.equal([2, 3, 4]);
   });

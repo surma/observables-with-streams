@@ -10,12 +10,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, filter, collect } from "../../src/index.js";
+import { range, filter, collect } from "../../src/index.js";
 
 Mocha.describe("filter()", function() {
   Mocha.it("removes items that don’t match the predicate", async function() {
     const list = await collect(
-      fromIterable([1, 2, 3, 4]).pipeThrough(filter(x => x % 2 === 0))
+      range(1, 4).pipeThrough(filter(x => x % 2 === 0))
     );
 
     chai.expect(list).to.deep.equal([2, 4]);
