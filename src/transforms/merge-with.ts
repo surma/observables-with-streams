@@ -12,41 +12,12 @@
  */
 
 import { Transform, Observable } from "../types.js";
-import { map } from "./map.js";
+import { merge } from "../combiners/merge.js";
 
 export function mergeWith<S, T>(other: Observable<T>): Transform<S, S | T> {
-  let rscResolver: (rsc: ReadableStreamDefaultController) => void;
-  const rsc = new Promise<ReadableStreamDefaultController>(
-    resolve => (rscResolver = resolve)
-  );
-
-  const closedStreams = new Set();
-  function closeOutputStream() {
-    return new WritableStream({
-      async close() {
-        closedStreams.add(this);
-        if (closedStreams.size === 2) {
-          (await rsc).close();
-        }
-      }
-    });
-  }
-
-  function forwardToOutputStream<Q extends S | T>(r: ReadableStream<Q>) {
-    r.pipeThrough(map(async chunk => (await rsc).enqueue(chunk))).pipeTo(
-      closeOutputStream()
-    );
-  }
-
   const { readable, writable } = new TransformStream();
-  forwardToOutputStream(readable);
-  forwardToOutputStream(other);
   return {
     writable,
-    readable: new ReadableStream({
-      start(controller) {
-        rscResolver(controller);
-      }
-    })
+    readable: merge(readable, other)
   };
 }
