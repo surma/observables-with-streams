@@ -12,16 +12,13 @@
  */
 
 import { Transform, Observable } from "../types.js";
+import { zip } from "../combiners/zip.js";
 
 export function zipWith<S, T>(other: Observable<T>): Transform<S, [S, T]> {
-  const reader = other.getReader();
-  return new TransformStream<S, [S, T]>({
-    async transform(chunk, controller) {
-      const { value, done } = await reader.read();
-      if (done) {
-        return controller.terminate();
-      }
-      controller.enqueue([chunk, value]);
-    }
-  });
+  const { readable, writable } = new TransformStream<S, [S, T]>();
+
+  return {
+    writable,
+    readable: zip(readable, other as any) as any
+  };
 }
