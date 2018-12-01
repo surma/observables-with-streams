@@ -11,9 +11,12 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-timer.js";
-export * from "./just.js";
+import { Observable } from "../types.js";
+import { external, EOF } from "./external.js";
+
+export function just<T>(v: T): Observable<T> {
+  const { next, observable } = external<T>();
+  next(v);
+  next(EOF);
+  return observable;
+}

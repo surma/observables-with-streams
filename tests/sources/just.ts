@@ -10,10 +10,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { just } from "../../src/index.js";
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-timer.js";
-export * from "./just.js";
+Mocha.describe("just()", function() {
+  Mocha.it("emits just one item", async function() {
+    const observable = just(1);
+    const reader = observable.getReader();
+    chai.expect(await reader.read()).to.deep.equal({
+      value: 1,
+      done: false
+    });
+    chai.expect(await reader.read()).to.deep.equal({
+      value: undefined,
+      done: true
+    });
+  });
+});
