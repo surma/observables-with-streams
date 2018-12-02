@@ -15,11 +15,15 @@ import { Observable } from "../types.js";
 import { external, EOF } from "./external.js";
 
 type GeneratorFunc<T> = () => IterableIterator<T>;
-export function fromGenerator<T>(it: GeneratorFunc<T>): Observable<T> {
-  const { next, observable } = external<T>();
-  for (const v of it()) {
-    next(v);
-  }
-  next(EOF);
-  return observable;
+export function fromGenerator<T>(f: GeneratorFunc<T>): Observable<T> {
+  const it = f();
+  return new ReadableStream<T>({
+    pull(controller) {
+      const { value, done } = it.next();
+      if (done) {
+        return controller.close();
+      }
+      controller.enqueue(value);
+    }
+  });
 }
