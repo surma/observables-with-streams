@@ -10,15 +10,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { range, scan, collect } from "../../src/index.js";
 
-export * from "./buffer-with-count.js";
-export * from "./combine-latest-with.js";
-export * from "./distinct.js";
-export * from "./filter.js";
-export * from "./for-each.js";
-export * from "./map.js";
-export * from "./merge-with.js";
-export * from "./scan.js";
-export * from "./take-while.js";
-export * from "./take.js";
-export * from "./zip-with.js";
+Mocha.describe("scan()", function() {
+  Mocha.it(
+    "scans over an observable with a reducer function",
+    async function() {
+      const list = await collect(
+        range(1, 5).pipeThrough(scan((a, b) => a + b, 0))
+      );
+
+      chai.expect(list).to.deep.equal([1, 3, 6, 10, 15]);
+    }
+  );
+});

@@ -11,14 +11,13 @@
  * limitations under the License.
  */
 
-export * from "./buffer-with-count.js";
-export * from "./combine-latest-with.js";
-export * from "./distinct.js";
-export * from "./filter.js";
-export * from "./for-each.js";
-export * from "./map.js";
-export * from "./merge-with.js";
-export * from "./scan.js";
-export * from "./take-while.js";
-export * from "./take.js";
-export * from "./zip-with.js";
+import { Transform } from "../types.js";
+
+export function scan<U, T>(f: (acc: U, v: T) => U, v0: U): Transform<T, U> {
+  return new TransformStream<T, U>({
+    transform(chunk, controller) {
+      v0 = f(v0, chunk);
+      controller.enqueue(v0);
+    }
+  });
+}
