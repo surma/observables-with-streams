@@ -10,15 +10,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { range, reduce } from "../../src/index.js";
 
-import { Transform } from "../types.js";
+Mocha.describe("reduce()", function() {
+  Mocha.it("reduces over the items of an observable", async function() {
+    const result = await reduce(range(1, 5), (a, b) => a + b, 0);
 
-export type ScanFunc<U, T> = (acc: U, v: T) => U;
-export function scan<U, T>(f: ScanFunc<U, T>, v0: U): Transform<T, U> {
-  return new TransformStream<T, U>({
-    transform(chunk, controller) {
-      v0 = f(v0, chunk);
-      controller.enqueue(v0);
-    }
+    chai.expect(result).to.deep.equal(15);
   });
-}
+});

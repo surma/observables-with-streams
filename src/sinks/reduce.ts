@@ -11,14 +11,14 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Observable } from "../types.js";
+import { scan, ScanFunc } from "../transforms/scan.js";
+import { last } from "./last.js";
 
-export type ScanFunc<U, T> = (acc: U, v: T) => U;
-export function scan<U, T>(f: ScanFunc<U, T>, v0: U): Transform<T, U> {
-  return new TransformStream<T, U>({
-    transform(chunk, controller) {
-      v0 = f(v0, chunk);
-      controller.enqueue(v0);
-    }
-  });
+export async function reduce<U, T>(
+  o: Observable<T>,
+  f: ScanFunc<U, T>,
+  v0: U
+): Promise<U> {
+  return last(o.pipeThrough(scan(f, v0)));
 }

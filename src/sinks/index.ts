@@ -15,4 +15,5 @@ export * from "./collect.js";
 export * from "./discard.js";
 export * from "./first.js";
 export * from "./last.js";
+export * from "./reduce.js";
 export * from "./single.js";
