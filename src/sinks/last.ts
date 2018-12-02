@@ -11,8 +11,22 @@
  * limitations under the License.
  */
 
-export * from "./collect.js";
-export * from "./discard.js";
-export * from "./first.js";
-export * from "./last.js";
-export * from "./single.js";
+import { Observable } from "../types.js";
+
+export async function last<T>(o: Observable<T>): Promise<T> {
+  const reader = o.getReader();
+  let latestValue: T;
+  let hasLatestValue = false;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    latestValue = value;
+    hasLatestValue = true;
+  }
+  if (!hasLatestValue) {
+    throw new Error("Observable finished without emitting any items");
+  }
+  return latestValue!;
+}

@@ -10,9 +10,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { range, fromIterable, last } from "../../src/index.js";
 
-export * from "./collect.js";
-export * from "./discard.js";
-export * from "./first.js";
-export * from "./last.js";
-export * from "./single.js";
+Mocha.describe("last()", function() {
+  Mocha.it("returns the last item", async function() {
+    const item = await last(range(1, 9));
+    chai.expect(item).to.equal(9);
+  });
+
+  Mocha.it("throws if no items are emitted", function(done) {
+    last(fromIterable([]))
+      .then(() => done("last() did not throw"))
+      .catch(() => done());
+  });
+});
