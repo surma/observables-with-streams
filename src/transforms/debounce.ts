@@ -17,6 +17,7 @@ export function debounce<T>(ms: number): Transform<T> {
   let latestDiscardedChunk: T;
   let hasDiscardedChunk = false;
   let isOnCooldown = false;
+  let isClosed = false;
 
   return new TransformStream({
     transform(chunk, controller) {
@@ -24,7 +25,7 @@ export function debounce<T>(ms: number): Transform<T> {
         isOnCooldown = true;
         setTimeout(() => {
           isOnCooldown = false;
-          if (hasDiscardedChunk) {
+          if (hasDiscardedChunk && !isClosed) {
             this.transform!(latestDiscardedChunk, controller);
             hasDiscardedChunk = false;
           }
@@ -34,6 +35,9 @@ export function debounce<T>(ms: number): Transform<T> {
         latestDiscardedChunk = chunk;
         hasDiscardedChunk = true;
       }
+    },
+    flush() {
+      isClosed = true;
     }
   });
 }

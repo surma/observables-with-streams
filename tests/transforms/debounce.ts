@@ -13,7 +13,7 @@
 import { external, debounce, collect, EOF } from "../../src/index.js";
 
 function wait() {
-  return new Promise(resolve => setTimeout(resolve, 100));
+  return new Promise(resolve => setTimeout(resolve, 5));
 }
 Mocha.describe("debounce()", function() {
   Mocha.it("debounces an observable", async function() {
