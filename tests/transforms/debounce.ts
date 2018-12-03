@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 import { external, debounce, collect, EOF } from "../../src/index.js";
-import { forEach } from "../../src/index.js";
-import { waitTicks } from "../utils.js";
 
 function wait() {
   return new Promise(resolve => setTimeout(resolve, 100));
