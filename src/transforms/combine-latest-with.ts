@@ -14,12 +14,12 @@
 import { Transform, Observable } from "../types.js";
 import { combineLatest } from "../combiners/combine-latest.js";
 
-export function combineLatestWith<S, T>(
-  other: Observable<T>
-): Transform<S, [S, T]> {
-  const { readable, writable } = new TransformStream<S, S>();
+export function combineLatestWith<T>(
+  ...others: Observable<T>[]
+): Transform<T, T[]> {
+  const { readable, writable } = new TransformStream<T, T>();
   return {
     writable,
-    readable: combineLatest(readable, other as any) as any
+    readable: combineLatest(readable, ...others as any) as any
   };
 }
