@@ -1,5 +1,5 @@
 {
-  "name": "observables-with-streams",
+  "name": "owp",
   "version": "0.0.1",
   "description": "A library of observables built with streams",
   "scripts": {
