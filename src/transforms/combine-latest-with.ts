@@ -20,6 +20,6 @@ export function combineLatestWith<T>(
   const { readable, writable } = new TransformStream<T, T>();
   return {
     writable,
-    readable: combineLatest(readable, ...others as any) as any
+    readable: combineLatest(readable, ...(others as any)) as any
   };
 }
