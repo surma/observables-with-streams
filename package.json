@@ -7,6 +7,8 @@
     "build": "tsc -p .",
     "test": "karma start"
   },
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Surma <surma@surma.link>",
   "license": "Apache-2.0",
   "devDependencies": {
