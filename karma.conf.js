@@ -14,14 +14,17 @@
 module.exports = function(config) {
   const configuration = {
     basePath: ".",
-    frameworks: ["mocha", "chai"],
+    frameworks: ["mocha", "chai", "karma-typescript"],
+    preprocessors: {
+      "**/*.ts": "karma-typescript"
+    },
     files: [
       {
-        pattern: "dist/tests/**/*.js",
+        pattern: "tests/**/*.ts",
         type: "module"
       },
       {
-        pattern: "dist/src/**/*.js",
+        pattern: "src/**/*.ts",
         included: false
       }
     ],
@@ -29,10 +32,20 @@ module.exports = function(config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
+    // logLevel: config.LOG_DEBUG,
     autoWatch: true,
     singleRun: true,
     concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"]
+    browsers: ["ChromeCanaryHeadless"],
+    karmaTypescriptConfig: {
+      coverageOptions: {
+        exclude: /.*/
+      },
+      bundlerOptions: {
+        entrypoints: /\/?tests\//
+      },
+      tsconfig: "./tsconfig.test.json",
+    }
   };
 
   config.set(configuration);
