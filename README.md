@@ -1,5 +1,9 @@
 # Observables with Streams
 
+```
+npm install --save owp
+```
+
 A collection of observables built with streams.
 
 This library is inspired by [ReactiveX’s operators](http://reactivex.io/documentation/operators.html) and implements a subset of them using [streams](https://streams.spec.whatwg.org).
