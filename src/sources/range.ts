@@ -14,6 +14,13 @@
 import { Observable } from "../types.js";
 import { external, EOF } from "./external.js";
 
+/**
+ * Creates an observable that emits numbers from `start` to `end`.
+ *
+ * @param start Number to start emitting from, such as `0`.
+ * @param end Number to stop emitting at, inclusive.
+ * @returns New observable that emits numbers.
+ */
 export function range(start: number, end: number): Observable<number> {
   const { observable, next } = external<number>();
   const len = Math.abs(end - start);

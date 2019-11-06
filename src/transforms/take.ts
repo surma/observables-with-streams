@@ -13,6 +13,14 @@
 
 import { Transform } from "../types.js";
 
+/**
+ * Returns a `Transform` that emits the first `n` items from the original
+ * observable.
+ *
+ * @template T Type of items emitted by the observable.
+ * @param n Maximum number of items to emit.
+ * @returns Transform that emits some items from the original observable.
+ */
 export function take<T>(n: number): Transform<T> {
   return new TransformStream<T, T>({
     transform(chunk, controller) {

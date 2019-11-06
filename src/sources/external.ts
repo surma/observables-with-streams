@@ -11,9 +11,20 @@
  * limitations under the License.
  */
 
+/**
+ * Symbol indicating the end of a stream. Used with `external`.
+ */
 export const EOF = Symbol();
 export type NextFunc<T> = (v: T | typeof EOF) => void;
 
+/**
+ * Utility function to create new observables from external sources.
+ * Returns an object with two values: the new observable, and a `next` function
+ * which will emit a value to `observable` when called.
+ * Calling `next` with `EOF` will indicate there are no more values to emit.
+ *
+ * @template T Type of items to be emitted by the observable.
+ */
 export function external<T>() {
   let next: NextFunc<T>;
   const observable = new ReadableStream<T>({

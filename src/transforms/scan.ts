@@ -14,6 +14,18 @@
 import { Transform } from "../types.js";
 
 export type ScanFunc<U, T> = (acc: U, v: T) => U;
+
+/**
+ * Reduces the original observable with `f`, emitting every intermediate result
+ * not including the initial value.
+ *
+ * @template U Type of result returned from the accumulator.
+ * @template T Type of items emitted by the observable.
+ * @param f Reduce function called with the accumulated value so far and the
+ * current item. Should return a new accumulated value.
+ * @param v0 Initial value.
+ * @returns Transform that emits accumulated values produced by `f`.
+ */
 export function scan<U, T>(f: ScanFunc<U, T>, v0: U): Transform<T, U> {
   return new TransformStream<T, U>({
     transform(chunk, controller) {

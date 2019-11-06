@@ -13,6 +13,16 @@
 
 import { Observable } from "../types.js";
 
+export function zip<T1, T2>(
+  o1: Observable<T1>,
+  o2: Observable<T2>
+): Observable<[T1, T2]>;
+export function zip<T1, T2, T3>(
+  o1: Observable<T1>,
+  o2: Observable<T2>,
+  o3: Observable<T3>
+): Observable<[T1, T2, T3]>;
+export function zip<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function zip<T>(...os: Array<Observable<T>>): Observable<T[]> {
   return new ReadableStream<T[]>({
     async start(controller) {

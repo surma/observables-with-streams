@@ -14,6 +14,12 @@
 import { Observable } from "../types.js";
 import { external } from "./external.js";
 
+/**
+ * Creates an observable that will forever emit `null` every `ms` milliseconds.
+ *
+ * @param ms Milliseconds between each emit.
+ * @returns New observable that emits null values.
+ */
 export function fromTimer(ms: number): Observable<null> {
   const { next, observable } = external<null>();
   setInterval(next, ms);
