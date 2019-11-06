@@ -24,7 +24,7 @@ import { last } from "./last.js";
  * @param o Observable to reduce.
  * @param f Reduce function called with the accumulated value so far and the
  * current item. Should return a new accumulated value.
- * @param v0 Initial value.
+ * @param v0 Initial accumulator value.
  * @returns Promise that resolves with the accumulated value.
  */
 export async function reduce<U, T>(

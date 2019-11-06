@@ -14,7 +14,7 @@
 import { Transform } from "../types.js";
 
 /**
- * Returns a `Transform` that emits a subset of item where `f` returns true.
+ * Returns a `Transform` that emits all items for which `f` returns true.
  *
  * @template T Type of items emitted by the observable.
  * @param f Function called with each emitted item. If it returns `true`, the

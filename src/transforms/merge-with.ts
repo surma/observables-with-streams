@@ -15,8 +15,9 @@ import { Transform, Observable } from "../types.js";
 import { merge } from "../combiners/merge.js";
 
 /**
- * Merges another observable by emitting all items from the original observable
- * then emitting all items from `other`.
+ * Merges another observable by emitting all items from both the original
+ * observable and the `other` observable. Items are emitted in the order they
+ * appear.
  *
  * @template S Type of items emitted by the original observable.
  * @template T Type of items emitted by `other`.
