@@ -15,6 +15,18 @@ import { Observable } from "../types.js";
 import { scan, ScanFunc } from "../transforms/scan.js";
 import { last } from "./last.js";
 
+/**
+ * Accumulates value, starting with `v0` and applying `f` to each emitted item.
+ * If no items are emitted the promise is rejected.
+ *
+ * @template U Type of result returned from the accumulator.
+ * @template T Type of items emitted by the observable.
+ * @param o Observable to reduce.
+ * @param f Reduce function called with the accumulated value so far and the
+ * current item. Should return a new accumulated value.
+ * @param v0 Initial accumulator value.
+ * @returns Promise that resolves with the accumulated value.
+ */
 export async function reduce<U, T>(
   o: Observable<T>,
   f: ScanFunc<U, T>,

@@ -13,6 +13,14 @@
 
 import { Observable } from "../types.js";
 
+/**
+ * Resolves with the only element emitted by the observable.
+ * If zero or more than one items are emitted, the promise is rejected.
+ *
+ * @template T Type of items emitted by the observable.
+ * @param o Observable to extract from.
+ * @returns Promise that resolves with a single item.
+ */
 export async function single<T>(o: Observable<T>): Promise<T> {
   const reader = o.getReader();
   const { value, done } = await reader.read();

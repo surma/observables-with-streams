@@ -14,6 +14,13 @@
 import { Observable } from "../types.js";
 import { external, EOF } from "./external.js";
 
+/**
+ * Creates an observable from a synchronous iterable.
+ *
+ * @template T Type of items to be emitted by the observable.
+ * @param it Iterable to create an observable from.
+ * @returns New observable that emits values from the iterable.
+ */
 export function fromIterable<T>(
   it: Iterable<T> | IterableIterator<T>
 ): Observable<T> {

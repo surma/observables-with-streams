@@ -13,6 +13,15 @@
 
 import { Transform } from "../types.js";
 
+/**
+ * Returns a `Transform` where all subsequent repetitions of the same item are
+ * filtered out.
+ *
+ * @template T Type of items emitted by the observable.
+ * @param f Function to check if two items are the same.
+ * By default strict equality is used.
+ * @returns Transform that emits some items from the original observable.
+ */
 export function distinct<T>(
   f: (a: T, b: T) => boolean = (a, b) => a === b
 ): Transform<T> {

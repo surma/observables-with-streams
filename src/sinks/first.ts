@@ -13,6 +13,15 @@
 
 import { Observable } from "../types.js";
 
+/**
+ * Resolves with the first element emitted by the observable,
+ * then releases the observable.
+ * If no items are emitted the promise is rejected.
+ *
+ * @template T Type of items emitted by the observable.
+ * @param o Observable to extract from.
+ * @returns Promise that resolves with a single item.
+ */
 export async function first<T>(o: Observable<T>): Promise<T> {
   const reader = o.getReader();
   const { value, done } = await reader.read();

@@ -13,6 +13,14 @@
 
 import { Observable } from "../types.js";
 
+/**
+ * Resolves with the last element emitted by the observable.
+ * If no items are emitted the promise is rejected.
+ *
+ * @template T Type of items emitted by the observable.
+ * @param o Observable to extract from.
+ * @returns Promise that resolves with a single item.
+ */
 export async function last<T>(o: Observable<T>): Promise<T> {
   const reader = o.getReader();
   let latestValue: T;

@@ -11,6 +11,10 @@
  * limitations under the License.
  */
 
+/**
+ * Sink for observables that discards all values.
+ * Useful to leave at the end of a chain.
+ */
 export function discard() {
-  return new WritableStream();
+  return new WritableStream<unknown>();
 }
