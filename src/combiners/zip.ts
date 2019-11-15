@@ -13,6 +13,14 @@
 
 import { Observable } from "../types.js";
 
+/**
+ * Zips items from multiple observables.
+ * The resulting observable emits items as array tuples.
+ *
+ * @template T Type of items emitted by the observables.
+ * @param os Observables to combine.
+ * @returns Observable that emits tuples of items.
+ */
 export function zip<T1, T2>(
   o1: Observable<T1>,
   o2: Observable<T2>

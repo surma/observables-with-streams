@@ -17,9 +17,7 @@ export function amb<T>(...os: Array<Observable<T>>): Observable<T> {
   return new ReadableStream({
     async start(controller) {
       const readers = os.map(o => o.getReader());
-      const reads = readers.map<Promise<[ReadableStreamReadResult<T>, number]>>(
-        async (r, i) => [await r.read(), i]
-      );
+      const reads = readers.map(async (r, i) => [await r.read(), i] as const);
       let [{ value, done }, i] = await Promise.race(reads);
       reads
         .filter((_, j) => j !== i)

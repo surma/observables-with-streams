@@ -13,10 +13,20 @@
 
 import { Observable } from "../types.js";
 
-export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
-  const hasValue = new Set();
-  const latestValue = (os.map(() => null) as any) as T[];
-  return new ReadableStream<T[]>({
+export function combineLatest<T1, T2>(
+  o1: Observable<T1>,
+  o2: Observable<T2>
+): Observable<[T1 | null, T2 | null]>;
+export function combineLatest<T1, T2, T3>(
+  o1: Observable<T1>,
+  o2: Observable<T2>,
+  o3: Observable<T3>
+): Observable<[T1 | null, T2 | null, T3 | null]>;
+export function combineLatest<T>(...os: Array<Observable<T>>): Observable<Array<T | null>>;
+export function combineLatest<T>(...os: Array<Observable<T>>): Observable<Array<T | null>> {
+  const hasValue = new Set<ReadableStreamDefaultReader>();
+  const latestValue: Array<T | null> = os.map(() => null);
+  return new ReadableStream<Array<T | null>>({
     async start(controller) {
       const forwarders = os.map(async (o, idx) => {
         const reader = o.getReader();
