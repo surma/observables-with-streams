@@ -12,6 +12,7 @@
  */
 
 import { Observable } from "../types.js";
+import { fromIterable } from "./from-iterable.js";
 
 type GeneratorFunc<T> = () => IterableIterator<T>;
 
@@ -23,14 +24,5 @@ type GeneratorFunc<T> = () => IterableIterator<T>;
  * @returns New observable that emits values from the generator.
  */
 export function fromGenerator<T>(f: GeneratorFunc<T>): Observable<T> {
-  const it = f();
-  return new ReadableStream<T>({
-    pull(controller) {
-      const { value, done } = it.next();
-      if (done) {
-        return controller.close();
-      }
-      controller.enqueue(value);
-    }
-  });
+  return fromIterable(f());
 }
