@@ -13,9 +13,19 @@
 
 import { Observable } from "../types.js";
 
+export function combineLatest<T1, T2>(
+  o1: Observable<T1>,
+  o2: Observable<T2>
+): Observable<[T1, T2]>;
+export function combineLatest<T1, T2, T3>(
+  o1: Observable<T1>,
+  o2: Observable<T2>,
+  o3: Observable<T3>
+): Observable<[T1, T2, T3]>;
+export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
-  const hasValue = new Set();
-  const latestValue = (os.map(() => null) as any) as T[];
+  const hasValue = new Set<ReadableStreamDefaultReader>();
+  const latestValue: Array<T | null> = os.map(() => null);
   return new ReadableStream<T[]>({
     async start(controller) {
       const forwarders = os.map(async (o, idx) => {
@@ -28,7 +38,7 @@ export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
           latestValue[idx] = value;
           hasValue.add(reader);
           if (hasValue.size === os.length) {
-            controller.enqueue([...latestValue]);
+            controller.enqueue([...latestValue as T[]]);
           }
         }
       });

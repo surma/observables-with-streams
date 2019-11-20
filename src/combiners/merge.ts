@@ -13,6 +13,14 @@
 
 import { Observable } from "../types.js";
 
+/**
+ * Merges multiple observables by emitting all items from all the observables. 
+ * Items are emitted in the order they appear.
+ *
+ * @template T Type of items emitted by the observables.
+ * @param os Observables to combine.
+ * @returns Observable that emits items from all observables.
+ */
 export function merge<T>(...os: Array<Observable<T>>): Observable<T> {
   return new ReadableStream<T>({
     async start(controller) {

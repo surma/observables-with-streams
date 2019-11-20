@@ -13,6 +13,15 @@
 
 import { Transform } from "../types.js";
 
+/**
+ * Returns a `Transform` where items are only emitted if `ms` milliseconds
+ * pass between emits. When many items are emitted in close succession
+ * by the original observable, only the last will be emitted here.
+ *
+ * @template T Type of items emitted by the observable.
+ * @param ms Milliseconds to wait before emitting an item.
+ * @returns Transform that emits some items from the original observable.
+ */
 export function debounce<T>(ms: number): Transform<T> {
   let latestDiscardedChunk: T;
   let hasDiscardedChunk = false;
