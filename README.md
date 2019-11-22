@@ -20,25 +20,25 @@ The goal of this library is to implement observables making as much use of the p
 <button id="inc">+</button>
 
 <script type="module">
-  import * as owp from "owp";
+  import * as ows from "observables-with-streams";
 
-  owp.merge(
-    owp.fromEvent(
+  ows.merge(
+    ows.fromEvent(
       document.querySelector("#dec")
       "click"
-    ).pipeThrough(owp.map(() => -1)),
-    owp.fromEvent(
+    ).pipeThrough(ows.map(() => -1)),
+    ows.fromEvent(
       document.querySelector("#inc")
       "click"
-    ).pipeThrough(owp.map(() => 1))
+    ).pipeThrough(ows.map(() => 1))
   )
     .pipeThrough(
-      owp.scan((v0, v1) => v0 + v1, 0)
+      ows.scan((v0, v1) => v0 + v1, 0)
     )
     .pipeThrough(
-      owp.forEach(v => document.querySelector("#counter").textContent = v)
+      ows.forEach(v => document.querySelector("#counter").textContent = v)
     )
-    .pipeTo(owp.discard());
+    .pipeTo(ows.discard());
 </script>
 ```
 
