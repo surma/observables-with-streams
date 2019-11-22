@@ -14,6 +14,17 @@
 import { Transform, Observable } from "../types.js";
 import { combineLatest } from "../combiners/combine-latest.js";
 
+/**
+ * Combines items from the original observable with the other observables.
+ * The resulting `Transform` emits items as array tuples.
+ * whenever the original or any of the given observables emit.
+ * The tuples contain the last emitted item from each observable.
+ *
+ * @typeparam S Type of items emitted by the original observable.
+ * @typeparam T Type of items emitted by `other`.
+ * @param others Other observables to combine with.
+ * @returns Transform that emits tuples of items.
+ */
 export function combineLatestWith<S, T1>(
   other: Observable<T1>
 ): Transform<S, [S, T1]>;
