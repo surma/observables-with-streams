@@ -1,3 +1,5 @@
 node_modules
 *.pem
 dist
+docs
+package-lock.json

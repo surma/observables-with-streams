@@ -14,7 +14,7 @@
 import { Observable } from "../types.js";
 
 /**
- * Merges multiple observables by emitting all items from all the observables. 
+ * Merges multiple observables by emitting all items from all the observables.
  * Items are emitted in the order they appear.
  *
  * @template T Type of items emitted by the observables.
