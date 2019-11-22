@@ -17,8 +17,8 @@ import { Transform } from "../types.js";
  * Returns a `Transform` with the results of applying the given function
  * to each emitted item of the original observable.
  *
- * @template S Type of items emitted by the original observable.
- * @template T Type of items returned by `f`.
+ * @typeparam S Type of items emitted by the original observable.
+ * @typeparam T Type of items returned by `f`.
  * @param f Function called with each emitted item. If it returns a promise,
  * the result is awaited then emitted.
  * @returns Transform that emits items produced by `f`.

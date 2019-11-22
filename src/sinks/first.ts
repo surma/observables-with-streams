@@ -18,7 +18,7 @@ import { Observable } from "../types.js";
  * then releases the observable.
  * If no items are emitted the promise is rejected.
  *
- * @template T Type of items emitted by the observable.
+ * @typeparam T Type of items emitted by the observable.
  * @param o Observable to extract from.
  * @returns Promise that resolves with a single item.
  */

@@ -23,7 +23,7 @@ export type NextFunc<T> = (v: T | typeof EOF) => void;
  * which will emit a value to `observable` when called.
  * Calling `next` with `EOF` will indicate there are no more values to emit.
  *
- * @template T Type of items to be emitted by the observable.
+ * @typeparam T Type of items to be emitted by the observable.
  */
 export function external<T>() {
   let next: NextFunc<T>;

@@ -18,7 +18,7 @@ import { Transform } from "../types.js";
  * pass between emits. When many items are emitted in close succession
  * by the original observable, only the last will be emitted here.
  *
- * @template T Type of items emitted by the observable.
+ * @typeparam T Type of items emitted by the observable.
  * @param ms Milliseconds to wait before emitting an item.
  * @returns Transform that emits some items from the original observable.
  */

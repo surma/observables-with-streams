@@ -19,8 +19,8 @@ import { last } from "./last.js";
  * Accumulates value, starting with `v0` and applying `f` to each emitted item.
  * If no items are emitted the promise is rejected.
  *
- * @template U Type of result returned from the accumulator.
- * @template T Type of items emitted by the observable.
+ * @typeparam U Type of result returned from the accumulator.
+ * @typeparam T Type of items emitted by the observable.
  * @param o Observable to reduce.
  * @param f Reduce function called with the accumulated value so far and the
  * current item. Should return a new accumulated value.

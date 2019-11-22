@@ -23,12 +23,10 @@ Mocha.describe("zip()", function() {
       )
     );
 
-    chai
-      .expect(list)
-      .to.deep.equal([
-        [1, "one", "eins"],
-        [2, "two", "zwei"],
-        [3, "three", "drei"]
-      ]);
+    chai.expect(list).to.deep.equal([
+      [1, "one", "eins"],
+      [2, "two", "zwei"],
+      [3, "three", "drei"]
+    ]);
   });
 });

@@ -17,7 +17,7 @@ import { external, EOF } from "./external.js";
 /**
  * Creates an observable that emits just one value.
  *
- * @template T Type of the emitted value.
+ * @typeparam T Type of the emitted value.
  * @param v Value to emit.
  * @returns New observable that emits one value before ending.
  */

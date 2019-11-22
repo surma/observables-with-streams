@@ -19,8 +19,8 @@ import { merge } from "../combiners/merge.js";
  * observable and the `other` observable. Items are emitted in the order they
  * appear.
  *
- * @template S Type of items emitted by the original observable.
- * @template T Type of items emitted by `other`.
+ * @typeparam S Type of items emitted by the original observable.
+ * @typeparam T Type of items emitted by `other`.
  * @param other Other observable to merge with.
  * @returns Transform that emits items from both observables.
  */

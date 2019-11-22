@@ -38,8 +38,13 @@ Mocha.describe("combineLatestWith()", function() {
       await waitTicks();
     }
 
-    chai
-      .expect(await list)
-      .to.deep.equal([[1, 0], [1, 1], [1, 2], [2, 2], [3, 2], [3, 3]]);
+    chai.expect(await list).to.deep.equal([
+      [1, 0],
+      [1, 1],
+      [1, 2],
+      [2, 2],
+      [3, 2],
+      [3, 3]
+    ]);
   });
 });

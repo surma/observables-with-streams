@@ -20,6 +20,10 @@ Mocha.describe("zipWith()", function() {
       )
     );
 
-    chai.expect(list).to.deep.equal([[1, "a"], [2, "b"], [3, "c"]]);
+    chai.expect(list).to.deep.equal([
+      [1, "a"],
+      [2, "b"],
+      [3, "c"]
+    ]);
   });
 });

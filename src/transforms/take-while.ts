@@ -17,7 +17,7 @@ import { Transform } from "../types.js";
  * Returns a `Transform` that emits items from the original observable until
  * `f` returns false.
  *
- * @template T Type of items emitted by the observable.
+ * @typeparam T Type of items emitted by the observable.
  * @param f Function called with each emitted item. If it returns `true`, the
  * item is emitted. Otherwise the item is discarded and no more items are
  * emitted.

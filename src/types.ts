@@ -18,7 +18,7 @@
  * and other languages. In its current incarnation, Observables are synonymous
  * with [WHATWG `ReadableStream`](https://streams.spec.whatwg.org/#rs-class).
  *
- * @template T Type of items emitted by the observable.
+ * @typeparam T Type of items emitted by the observable.
  */
 
 export type Observable<T> = ReadableStream<T>;

@@ -19,8 +19,8 @@ export type ScanFunc<U, T> = (acc: U, v: T) => U;
  * Reduces the original observable with `f`, emitting every intermediate result
  * not including the initial value.
  *
- * @template U Type of result returned from the accumulator.
- * @template T Type of items emitted by the observable.
+ * @typeparam U Type of result returned from the accumulator.
+ * @typeparam T Type of items emitted by the observable.
  * @param f Reduce function called with the accumulated value so far and the
  * current item. Should return a new accumulated value.
  * @param v0 Initial value.

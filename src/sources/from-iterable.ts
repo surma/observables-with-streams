@@ -17,7 +17,7 @@ import { external, EOF } from "./external.js";
 /**
  * Creates an observable from a synchronous iterable.
  *
- * @template T Type of items to be emitted by the observable.
+ * @typeparam T Type of items to be emitted by the observable.
  * @param it Iterable to create an observable from.
  * @returns New observable that emits values from the iterable.
  */

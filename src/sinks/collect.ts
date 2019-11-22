@@ -16,7 +16,7 @@ import { Observable } from "../types.js";
 /**
  * Collects all values from the observable into an array.
  *
- * @template T Type of items emitted by the observable.
+ * @typeparam T Type of items emitted by the observable.
  * @param o Observable to collect from.
  * @returns Promise that resolves with an array.
  */

@@ -16,7 +16,7 @@ import { Transform } from "../types.js";
 /**
  * Collects items from the original observable into buffers of size `count`.
  *
- * @template T Type of items emitted by the observable.
+ * @typeparam T Type of items emitted by the observable.
  * @param count Max size for the buffers.
  * @returns Transform that emits arrays of items from the original observable.
  */

@@ -17,7 +17,7 @@ import { Transform } from "../types.js";
  * Calls a function for each item emitted by an observable.
  * Returns a `Transform` that emits the same items.
  *
- * @template T Type of items emitted by the observable.
+ * @typeparam T Type of items emitted by the observable.
  * @param f Function called with each emitted value.
  * @returns Transform that emits the same items as the original observable.
  */

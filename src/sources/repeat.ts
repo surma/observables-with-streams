@@ -16,7 +16,7 @@ import { Observable } from "../types.js";
 /**
  * Creates an observable that forever emits the same value.
  *
- * @template T Type of the emitted value.
+ * @typeparam T Type of the emitted value.
  * @returns New observable that emits the same value multiple times.
  */
 export function repeat<T>(v: T): Observable<T> {
