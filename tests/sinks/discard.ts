@@ -10,18 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable, discard } from "../../src/index.js";
 
-/**
- * Sink for observables that discards all values.
- * Useful to leave at the end of a chain.
- *
- * @typeparam T Type of items emitted by the observable.
- * @param f Function to call for each value before it’s discarded.
- */
-export function discard<T>(f: (v: T) => unknown = () => {}) {
-  return new WritableStream<T>({
-    write(chunk: T) {
-      f(chunk);
-    }
+Mocha.describe("discard()", function() {
+  Mocha.it("calls a function for each value", async function() {
+    const iterable = [1, 2, 3, 4];
+    const result: number[] = [];
+    await fromIterable(iterable).pipeTo(discard(v => result.push(v)));
+    chai.expect(result).to.deep.equal(iterable);
   });
-}
+});
