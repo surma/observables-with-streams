@@ -35,10 +35,11 @@ The goal of this library is to implement observables making as much use of the p
     .pipeThrough(
       ows.scan((v0, v1) => v0 + v1, 0)
     )
-    .pipeThrough(
-      ows.forEach(v => document.querySelector("#counter").textContent = v)
-    )
-    .pipeTo(ows.discard());
+    .pipeTo(
+      ows.discard(
+        v => document.querySelector("#counter").textContent = v
+      )
+    );
 </script>
 ```
 
