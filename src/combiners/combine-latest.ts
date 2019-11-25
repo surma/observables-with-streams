@@ -15,8 +15,8 @@ import { Observable } from "../types.js";
 
 /**
  * Combines items from multiple observables.
- * The resulting observable emits array tuples
- * whenever any of the given observables emit.
+ * The resulting observable emits array tuples whenever any of the given
+ * observables emit, as long as every observable has emitted at least once.
  * The tuples contain the last emitted item from each observable.
  *
  * @typeparam T Type of items emitted by the observables.

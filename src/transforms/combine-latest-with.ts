@@ -16,9 +16,7 @@ import { combineLatest } from "../combiners/combine-latest.js";
 
 /**
  * Combines items from the original observable with the other observables.
- * The resulting `Transform` emits items as array tuples.
- * whenever the original or any of the given observables emit.
- * The tuples contain the last emitted item from each observable.
+ * See {@link combineLatest}.
  *
  * @typeparam S Type of items emitted by the original observable.
  * @typeparam T Type of items emitted by `other`.

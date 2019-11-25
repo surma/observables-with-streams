@@ -16,7 +16,7 @@ import { zip } from "../combiners/zip.js";
 
 /**
  * Zips items from the original observable with the `other` observable.
- * The resulting `Transform` emits items as array pairs.
+ * See {@link zip}.
  *
  * @typeparam S Type of items emitted by the original observable.
  * @typeparam T Type of items emitted by `other`.
