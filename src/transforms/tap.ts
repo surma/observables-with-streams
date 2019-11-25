@@ -11,16 +11,12 @@
  * limitations under the License.
  */
 
-export * from "./buffer-with-count.js";
-export * from "./combine-latest-with.js";
-export * from "./debounce.js";
-export * from "./distinct.js";
-export * from "./filter.js";
-export * from "./for-each.js";
-export * from "./map.js";
-export * from "./merge-with.js";
-export * from "./scan.js";
-export * from "./take-while.js";
-export * from "./take.js";
-export * from "./tap.js";
-export * from "./zip-with.js";
+import { Transform } from "../types.js";
+import { forEach } from "./for-each.js";
+
+/**
+ * Alias for {@link forEach}.
+ */
+export function tap<T>(f: (x: T) => void): Transform<T> {
+  return forEach(f);
+}
