@@ -14,7 +14,7 @@
 module.exports = function(config) {
   const configuration = {
     basePath: ".",
-    frameworks: ["mocha", "chai", "karma-typescript"],
+    frameworks: ["mocha", "chai", "karma-typescript", "detectBrowsers"],
     preprocessors: {
       "**/*.ts": "karma-typescript"
     },
@@ -36,7 +36,6 @@ module.exports = function(config) {
     autoWatch: true,
     singleRun: true,
     concurrency: Infinity,
-    browsers: ["ChromeCanaryHeadless"],
     karmaTypescriptConfig: {
       coverageOptions: {
         exclude: /.*/
@@ -45,6 +44,28 @@ module.exports = function(config) {
         entrypoints: /\/?tests\//
       },
       tsconfig: "./tsconfig.test.json",
+    },
+    detectBrowsers: {
+      enabled: true,
+      usePhantomJS: false,
+      preferHeadless: true,
+      postDetection: availableBrowsers => {
+        if (process.env.INSIDE_DOCKER) {
+          return ["DockerChrome"];
+        } else if (process.env.CHROME_ONLY) {
+          return ["ChromeHeadless"];
+        } else {
+          return availableBrowsers.filter(
+            browser => browser !== "SafariTechPreview"
+          );
+        }
+      }
+    },
+    customLaunchers: {
+      DockerChrome: {
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"]
+      }
     }
   };
 
