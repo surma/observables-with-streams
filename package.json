@@ -6,7 +6,9 @@
     "fmt": "prettier --write './{src,tests}/**/*.ts' *.{md,json}",
     "build": "tsc -p .",
     "docs": "typedoc --out docs --mode modules",
-    "test": "karma start"
+    "test": "karma start",
+    "pretest:unit": "tsc -p tsconfig.test.json",
+    "test:unit": "mocha --exit tmp/tests/before.js tmp/tests/**/*.js"
   },
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,10 +22,12 @@
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-mocha": "^1.3.0",
+    "message-port-polyfill": "^0.2.0",
     "mocha": "^5.2.0",
     "prettier": "^1.15.3",
     "typedoc": "^0.15.2",
-    "typescript": "^3.4.2"
+    "typescript": "^3.4.2",
+    "web-streams-polyfill": "^2.0.6"
   },
   "dependencies": {
     "karma-typescript": "^4.0.0"

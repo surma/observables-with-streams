@@ -21,6 +21,6 @@ Mocha.describe("fromTimer()", function() {
     setTimeout(() => {
       chai.expect(list).to.have.length(4);
       done();
-    }, 40);
+    }, 49);
   });
 });

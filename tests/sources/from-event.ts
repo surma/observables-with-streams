@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromEvent, EOF } from "../../src/index.js";
+import { fromEvent } from "../../src/index.js";
 
 Mocha.describe("fromEvent()", function() {
   Mocha.it("emits on events", async function() {
