@@ -13,6 +13,14 @@
 
 import { Observable } from "../types.js";
 
+/**
+ * Takes in multiple observables but only emits items from the first observable
+ * to emit.
+ *
+ * @typeparam T Type of items emitted by the observables.
+ * @param os Observables to race.
+ * @returns Observable that emits items from one of the given observables.
+ */
 export function amb<T>(...os: Array<Observable<T>>): Observable<T> {
   return new ReadableStream({
     async start(controller) {

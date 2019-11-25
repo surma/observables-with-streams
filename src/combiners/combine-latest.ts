@@ -13,6 +13,16 @@
 
 import { Observable } from "../types.js";
 
+/**
+ * Combines items from multiple observables.
+ * The resulting observable emits array tuples whenever any of the given
+ * observables emit, as long as every observable has emitted at least once.
+ * The tuples contain the last emitted item from each observable.
+ *
+ * @typeparam T Type of items emitted by the observables.
+ * @param os Observables to combine.
+ * @returns Observable that emits tuples of items.
+ */
 export function combineLatest<T1, T2>(
   o1: Observable<T1>,
   o2: Observable<T2>
