@@ -11,8 +11,9 @@
  * limitations under the License.
  */
 
-export * from "./amb.js";
-export * from "./combine-latest.js";
-export * from "./merge.js";
-export * from "./race.js";
-export * from "./zip.js";
+import { Observable } from "../types.js";
+import { amb } from "./amb.js";
+
+export function race<T>(...os: Array<Observable<T>>): Observable<T> {
+  return amb(...os);
+}
