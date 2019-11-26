@@ -20,6 +20,7 @@ export * from "./for-each.js";
 export * from "./map.js";
 export * from "./merge-with.js";
 export * from "./scan.js";
+export * from "./switch-all.js";
 export * from "./take-while.js";
 export * from "./take.js";
 export * from "./tap.js";
