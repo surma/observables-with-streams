@@ -13,6 +13,7 @@
 
 import { Observable, Transform } from "../types.js";
 import { external, EOF } from "../sources/external.js";
+import { externalPromise } from "../utils.js";
 
 /**
  * Converts a higher-order Observable into a first-order Observable
@@ -23,38 +24,44 @@ import { external, EOF } from "../sources/external.js";
  * emitted by the outer observable.
  */
 export function switchAll<T>(): Transform<Observable<T>, T> {
-  const { observable, next } = external<T>();
-  const { readable, writable } = new TransformStream<
-    Observable<T>,
-    Observable<T>
-  >();
-
-  const outerReader = readable.getReader();
-
-  outerReader.read().then(async function f({ value: innerObservable, done }) {
-    if (done) {
-      next(EOF);
-      return;
-    }
-    const nextOuterReader = outerReader.read().then(v => {
-      f(v);
-      return false;
-    });
-    const innerReader = innerObservable.getReader();
-    let cont = true;
-    while (cont) {
-      cont = await Promise.race([
-        nextOuterReader,
-        innerReader.read().then(({ value, done }) => {
-          if (done) {
-            return false;
+  const lastInnerDone = externalPromise();
+  let innerStreamCounter = 0;
+  let outerDone = false;
+  let currentReader: ReadableStreamReader<T> | null;
+  return new TransformStream({
+    transform(o, controller) {
+      innerStreamCounter++;
+      if (currentReader) {
+        currentReader.cancel();
+      }
+      currentReader = o.getReader();
+      (async () => {
+        const readerCopy = currentReader;
+        while (true) {
+          try {
+            const { value, done } = await readerCopy.read();
+            if (done) {
+              break;
+            }
+            controller.enqueue(value);
+          } catch (e) {
+            break;
           }
-          next(value);
-          return true;
-        })
-      ]);
+        }
+        innerStreamCounter--;
+        if (innerStreamCounter === 0) {
+          currentReader = null;
+        }
+        if (outerDone) {
+          lastInnerDone.resolve();
+        }
+      })();
+    },
+    async flush() {
+      outerDone = true;
+      if (currentReader) {
+        await lastInnerDone.promise;
+      }
     }
   });
-
-  return { writable, readable: observable };
 }

@@ -17,7 +17,15 @@ import {
   external,
   EOF
 } from "../../src/index.js";
+import { NextFunc } from "../../src/sources/external.js";
+
 import { waitTicks } from "../utils.js";
+
+function safeNext<T>(o: { next: NextFunc<T> }, v: T) {
+  try {
+    o.next(v);
+  } catch (e) {}
+}
 
 Mocha.describe("switch-all()", function() {
   Mocha.it("re-emit the first observable", async function() {
@@ -31,34 +39,35 @@ Mocha.describe("switch-all()", function() {
   Mocha.it("switches to the most recent active observable", async function() {
     const o1 = external();
     const o2 = external();
-    const superO = external();
+    const outerO = external();
 
-    const list = await collect(superO.observable.pipeThrough(switchAll()));
+    const listP = collect(outerO.observable.pipeThrough(switchAll()));
 
-    superO.next(o1);
+    outerO.next(o1.observable);
     await waitTicks();
-    o1.next(11), await waitTicks();
-    o1.next(12);
+    safeNext(o1, 11);
     await waitTicks();
-    superO.next(o2);
+    safeNext(o1, 12);
     await waitTicks();
-    o2.next(21);
+    outerO.next(o2.observable);
     await waitTicks();
-    o1.next(13);
+    safeNext(o2, 21);
     await waitTicks();
-    o1.next(14);
+    safeNext(o1, 13);
     await waitTicks();
-    superO.next(EOF);
+    safeNext(o1, 14);
     await waitTicks();
-    o2.next(22);
+    outerO.next(EOF);
     await waitTicks();
-    o1.next(EOF);
+    safeNext(o2, 22);
     await waitTicks();
-    o2.next(23);
+    safeNext(o1, EOF);
     await waitTicks();
-    o2.next(EOF);
+    safeNext(o2, 23);
+    await waitTicks();
+    safeNext(o2, EOF);
     await waitTicks();
 
-    chai.expect(list).to.deep.equal([11, 12, 21, 22, 23]);
+    chai.expect(await listP).to.deep.equal([11, 12, 21, 22, 23]);
   });
 });
