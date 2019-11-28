@@ -10,20 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromIterable, endWith, collect } from "../../src/index.js";
 
-export * from "./buffer-with-count.js";
-export * from "./combine-latest-with.js";
-export * from "./debounce.js";
-export * from "./distinct.js";
-export * from "./end-with.js";
-export * from "./filter.js";
-export * from "./for-each.js";
-export * from "./map.js";
-export * from "./merge-with.js";
-export * from "./sample.js";
-export * from "./scan.js";
-export * from "./switch-all.js";
-export * from "./take-while.js";
-export * from "./take.js";
-export * from "./tap.js";
-export * from "./zip-with.js";
+Mocha.describe("endWidth()", function() {
+  Mocha.it("ends in the given items", async function() {
+    const list = await collect(
+      fromIterable([1, 2, 3]).pipeThrough(endWith(4, 5, 6))
+    );
+
+    chai.expect(list).to.deep.equal([1, 2, 3, 4, 5, 6]);
+  });
+});

@@ -11,19 +11,23 @@
  * limitations under the License.
  */
 
-export * from "./buffer-with-count.js";
-export * from "./combine-latest-with.js";
-export * from "./debounce.js";
-export * from "./distinct.js";
-export * from "./end-with.js";
-export * from "./filter.js";
-export * from "./for-each.js";
-export * from "./map.js";
-export * from "./merge-with.js";
-export * from "./sample.js";
-export * from "./scan.js";
-export * from "./switch-all.js";
-export * from "./take-while.js";
-export * from "./take.js";
-export * from "./tap.js";
-export * from "./zip-with.js";
+import { Transform } from "../types.js";
+
+/**
+ * Returns a `Transform` that emits the items specified as arguments
+ * after te source observable ends.
+ *
+ * @typeparam T Type of items emitted by the observable.
+ * @param vs Values to emit after the source observable ends.
+ * @returns Transform that emits the items of `vs` after the
+ * source observables ends.
+ */
+export function endWith<T>(...vs: T[]): Transform<T> {
+  return new TransformStream<T, T>({
+    flush(controller) {
+      for (const v of vs) {
+        controller.enqueue(v);
+      }
+    }
+  });
+}
