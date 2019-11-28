@@ -19,6 +19,7 @@ export * from "./filter.js";
 export * from "./for-each.js";
 export * from "./map.js";
 export * from "./merge-with.js";
+export * from "./sample.js";
 export * from "./scan.js";
 export * from "./switch-all.js";
 export * from "./take-while.js";
