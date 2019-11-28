@@ -27,4 +27,5 @@ export * from "./switch-all.js";
 export * from "./take-while.js";
 export * from "./take.js";
 export * from "./tap.js";
+export * from "./window.js";
 export * from "./zip-with.js";
