@@ -12,7 +12,6 @@
  */
 
 import { Observable, Transform } from "../types.js";
-import { external, EOF } from "../sources/external.js";
 import { externalPromise } from "../utils.js";
 
 /**
