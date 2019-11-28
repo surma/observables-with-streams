@@ -11,6 +11,7 @@
  * limitations under the License.
  */
 
+export * from "./buffer.js";
 export * from "./buffer-with-count.js";
 export * from "./combine-latest-with.js";
 export * from "./debounce.js";
