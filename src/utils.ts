@@ -11,8 +11,9 @@
  * limitations under the License.
  */
 
-export * from "./amb.js";
-export * from "./combine-latest.js";
-export * from "./merge.js";
-export * from "./race.js";
-export * from "./zip.js";
+export function externalPromise<T = unknown>() {
+  let resolve: (value?: T) => void;
+  const promise = new Promise<T>(_resolve => (resolve = _resolve));
+  // @ts-ignore
+  return { resolve, promise };
+}

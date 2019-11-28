@@ -11,8 +11,12 @@
  * limitations under the License.
  */
 
-export * from "./amb.js";
-export * from "./combine-latest.js";
-export * from "./merge.js";
-export * from "./race.js";
-export * from "./zip.js";
+import { Transform } from "../types.js";
+import { forEach } from "./for-each.js";
+
+/**
+ * Alias for {@link forEach}.
+ */
+export function tap<T>(f: (x: T) => void): Transform<T> {
+  return forEach(f);
+}
