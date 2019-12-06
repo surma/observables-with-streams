@@ -15,3 +15,20 @@ export async function waitTicks(n: number = 5) {
     await 0;
   }
 }
+
+let uid = 0;
+const { port1, port2 } = new MessageChannel();
+port2.start();
+export async function waitTask() {
+  const localId = uid++;
+  port1.postMessage(localId);
+  return new Promise(resolve => {
+    port2.addEventListener("message", function f(ev) {
+      if (ev.data !== localId) {
+        return;
+      }
+      port2.removeEventListener("message", f);
+      resolve();
+    });
+  });
+}

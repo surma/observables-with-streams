@@ -14,18 +14,23 @@
 import { Transform } from "../types.js";
 
 /**
- * Calls a function for each item emitted by an observable.
- * Returns a `Transform` that emits the same items.
+ * Calls a function for each item emitted by an observable without
+ * waiting for the function to return to forward the item.
+ * Exceptions thrown by the function will be caught and ignored.
  *
  * @typeparam T Type of items emitted by the observable.
  * @param f Function called with each emitted value.
  * @returns Transform that emits the same items as the original observable.
  */
-export function forEach<T>(f: (x: T) => void): Transform<T> {
+export function forEach<T>(
+  f: (x: T) => Promise<unknown> | unknown
+): Transform<T> {
   return new TransformStream<T, T>({
     async transform(chunk, controller) {
       controller.enqueue(chunk);
-      f(chunk);
+      try {
+        await f(chunk);
+      } catch (e) {}
     }
   });
 }
