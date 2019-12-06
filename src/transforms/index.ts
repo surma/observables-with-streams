@@ -27,6 +27,7 @@ export * from "./merge-with.js";
 export * from "./sample.js";
 export * from "./scan.js";
 export * from "./switch-all.js";
+export * from "./switch-map.js";
 export * from "./take-while.js";
 export * from "./take.js";
 export * from "./tap.js";
