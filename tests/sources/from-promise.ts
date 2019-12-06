@@ -10,13 +10,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { fromPromise, collect } from "../../src/index.js";
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-promise.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./range.js";
-export * from "./repeat.js";
+Mocha.describe("fromPromise()", function() {
+  Mocha.it("creates observables from promises", async function() {
+    const observable = fromPromise(new Promise(resolve => resolve(4)));
+    const list = await collect(observable);
+    chai.expect(list).to.deep.equal([4]);
+  });
+});

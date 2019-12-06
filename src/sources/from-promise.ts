@@ -11,12 +11,21 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-promise.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./range.js";
-export * from "./repeat.js";
+import { Observable } from "../types.js";
+
+/**
+ * Creates an observable from a promise, that emits exactly one value when
+ * the promise resolves.
+ *
+ * @typeparam T Type of the promise value.
+ * @param p Promise that will be awaited.
+ * @returns New observable that emits the value the promise settles with.
+ */
+export function fromPromise<T>(p: Promise<T>): Observable<T> {
+  return new ReadableStream({
+    async start(controller) {
+      controller.enqueue(await p);
+      controller.close();
+    }
+  });
+}
