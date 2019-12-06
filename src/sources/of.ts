@@ -11,14 +11,17 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-async-function.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-promise.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./of.js";
-export * from "./range.js";
-export * from "./repeat.js";
+import { Observable } from "../types.js";
+import { external, EOF } from "./external.js";
+import { just } from "./just.js";
+
+/**
+ * An alias for {@link just}.
+ *
+ * @typeparam T Type of the emitted value.
+ * @param vs Values to emit.
+ * @returns New observable that emits the given values before ending.
+ */
+export function of<T>(...vs: T[]): Observable<T> {
+  return just(...vs);
+}

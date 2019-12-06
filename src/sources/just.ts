@@ -15,15 +15,17 @@ import { Observable } from "../types.js";
 import { external, EOF } from "./external.js";
 
 /**
- * Creates an observable that emits just one value.
+ * Creates an observable that emits a set of values.
  *
  * @typeparam T Type of the emitted value.
- * @param v Value to emit.
- * @returns New observable that emits one value before ending.
+ * @param vs Values to emit.
+ * @returns New observable that emits the given values before ending.
  */
-export function just<T>(v: T): Observable<T> {
+export function just<T>(...vs: T[]): Observable<T> {
   const { next, observable } = external<T>();
-  next(v);
+  for (const v of vs) {
+    next(v);
+  }
   next(EOF);
   return observable;
 }

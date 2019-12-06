@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { just } from "../../src/index.js";
+import { just, collect } from "../../src/index.js";
 
 Mocha.describe("just()", function() {
   Mocha.it("emits just one item", async function() {
@@ -24,5 +24,10 @@ Mocha.describe("just()", function() {
       value: undefined,
       done: true
     });
+  });
+  Mocha.it("emits a set of items", async function() {
+    const list = await collect(just(1, 2, 3));
+
+    chai.expect(list).to.deep.equal([1, 2, 3]);
   });
 });
