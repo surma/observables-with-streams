@@ -6,7 +6,8 @@
     "fmt": "prettier --write './{src,tests}/**/*.ts' *.{md,json}",
     "build": "tsc -p .",
     "docs": "typedoc --out docs --mode modules",
-    "test": "CHROME_ONLY=1 karma start"
+    "test": "CHROME_ONLY=1 karma start",
+    "prepublish": "npm run build"
   },
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
