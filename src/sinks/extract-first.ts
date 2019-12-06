@@ -22,7 +22,7 @@ import { Observable } from "../types.js";
  * @param o Observable to extract from.
  * @returns Promise that resolves with a single item.
  */
-export async function first<T>(o: Observable<T>): Promise<T> {
+export async function extractFirst<T>(o: Observable<T>): Promise<T> {
   const reader = o.getReader();
   const { value, done } = await reader.read();
   if (done) {

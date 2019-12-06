@@ -21,7 +21,7 @@ import { Observable } from "../types.js";
  * @param o Observable to extract from.
  * @returns Promise that resolves with a single item.
  */
-export async function last<T>(o: Observable<T>): Promise<T> {
+export async function extractLast<T>(o: Observable<T>): Promise<T> {
   const reader = o.getReader();
   let latestValue: T;
   let hasLatestValue = false;

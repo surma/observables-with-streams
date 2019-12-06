@@ -13,7 +13,7 @@
 
 import { Observable } from "../types.js";
 import { scan, ScanFunc } from "../transforms/scan.js";
-import { last } from "./last.js";
+import { extractLast } from "./extract-last.js";
 
 /**
  * Accumulates value, starting with `v0` and applying `f` to each emitted item.
@@ -32,5 +32,5 @@ export async function reduce<U, T>(
   f: ScanFunc<U, T>,
   v0: U
 ): Promise<U> {
-  return last(o.pipeThrough(scan(f, v0)));
+  return extractLast(o.pipeThrough(scan(f, v0)));
 }

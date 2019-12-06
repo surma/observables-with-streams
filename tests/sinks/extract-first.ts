@@ -10,17 +10,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, fromIterable, last } from "../../src/index.js";
+import { fromIterable, extractFirst } from "../../src/index.js";
 
-Mocha.describe("last()", function() {
-  Mocha.it("returns the last item", async function() {
-    const item = await last(range(1, 9));
-    chai.expect(item).to.equal(9);
+Mocha.describe("extractFirst()", function() {
+  Mocha.it("returns the first item", async function() {
+    const item = await extractFirst(fromIterable([1, 2]));
+    chai.expect(item).to.equal(1);
   });
 
   Mocha.it("throws if no items are emitted", function(done) {
-    last(fromIterable([]))
-      .then(() => done("last() did not throw"))
+    extractFirst(fromIterable([]))
+      .then(() => done("first() did not throw"))
       .catch(() => done());
+  });
+
+  Mocha.it("can be used multiple times", async function() {
+    const o = fromIterable([1, 2]);
+    let item;
+    item = await extractFirst(o);
+    chai.expect(item).to.equal(1);
+    item = await extractFirst(o);
+    chai.expect(item).to.equal(2);
   });
 });
