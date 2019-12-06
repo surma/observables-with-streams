@@ -11,13 +11,17 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-async-function.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-promise.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./range.js";
-export * from "./repeat.js";
+import { Observable } from "../types.js";
+import { fromPromise } from "./from-promise.js";
+
+/**
+ * Creates an observable from an asynchronous function. The observable
+ * emits exactly one value when once the function returns.
+ *
+ * @typeparam T Type of the promise value.
+ * @param f Async function that will be awaited.
+ * @returns New observable that emits the value the async function returns.
+ */
+export function fromAsyncFunction<T>(f: () => Promise<T>): Observable<T> {
+  return fromPromise(f());
+}

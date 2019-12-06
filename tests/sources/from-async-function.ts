@@ -10,14 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { collect, fromAsyncFunction } from "../../src/index.js";
 
-export * from "./external.js";
-export * from "./from-async-function.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-promise.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./range.js";
-export * from "./repeat.js";
+Mocha.describe("fromAsyncFunction()", function() {
+  Mocha.it("creates observable", async function() {
+    const observable = fromAsyncFunction(async () => {
+      return 4;
+    });
+    const list = await collect(observable);
+    chai.expect(list).to.deep.equal([4]);
+  });
+});
