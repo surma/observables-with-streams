@@ -15,38 +15,33 @@ import { Transform } from "../types.js";
 
 /**
  * Returns a `Transform` where items are only emitted if `ms` milliseconds
- * pass between emits. When many items are emitted in close succession
- * by the original observable, only the last will be emitted here.
+ * pass without new a new emit by the source observable. If a new value is
+ * emitted, the “cooldown” is restarted and the old value is discarded.
  *
  * @typeparam T Type of items emitted by the observable.
  * @param ms Milliseconds to wait before emitting an item.
  * @returns Transform that emits some items from the original observable.
  */
 export function debounce<T>(ms: number): Transform<T> {
-  let latestDiscardedChunk: T;
-  let hasDiscardedChunk = false;
-  let isOnCooldown = false;
-  let isClosed = false;
-
+  let timeout: number;
+  let timeoutP: Promise<unknown>;
+  let savedChunk: T;
   return new TransformStream({
     transform(chunk, controller) {
-      if (!isOnCooldown) {
-        isOnCooldown = true;
-        setTimeout(() => {
-          isOnCooldown = false;
-          if (hasDiscardedChunk && !isClosed) {
-            this.transform!(latestDiscardedChunk, controller);
-            hasDiscardedChunk = false;
-          }
-        }, ms);
-        controller.enqueue(chunk);
-      } else {
-        latestDiscardedChunk = chunk;
-        hasDiscardedChunk = true;
+      savedChunk = chunk;
+      if (timeout > 0) {
+        clearTimeout(timeout);
       }
+      timeoutP = new Promise(resolve => {
+        timeout = setTimeout(() => {
+          controller.enqueue(savedChunk);
+          timeout = 0;
+          resolve();
+        }, ms);
+      });
     },
-    flush() {
-      isClosed = true;
+    async flush() {
+      await timeoutP;
     }
   });
 }

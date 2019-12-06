@@ -11,39 +11,29 @@
  * limitations under the License.
  */
 import { external, debounce, collect, EOF } from "../../src/index.js";
+import { waitMs } from "../utils.js";
 
-function wait() {
-  return new Promise(resolve => setTimeout(resolve, 5));
-}
 Mocha.describe("debounce()", function() {
   Mocha.it("debounces an observable", async function() {
     const { observable, next } = external<number>();
 
-    const list = collect(observable.pipeThrough(debounce(5)));
+    const list = collect(observable.pipeThrough(debounce(9)));
 
-    const steps = [
-      () => next(0),
-      () => wait(),
-      () => next(1),
-      () => next(1),
-      () => wait(),
-      () => wait(),
-      () => wait(),
-      () => next(2),
-      () => next(3),
-      () => next(4),
-      () => wait(),
-      () => wait(),
-      () => wait(),
-      () => next(5),
-      () => next(6),
-      () => next(EOF)
-    ];
+    await next(0);
+    await waitMs(5);
+    await next(1);
+    await waitMs(10);
+    await next(2);
+    await waitMs(1);
+    await next(3);
+    await waitMs(1);
+    await next(4);
+    await waitMs(1);
+    await next(5);
+    await waitMs(10);
+    await next(6);
+    await next(EOF);
 
-    for (const step of steps) {
-      await step();
-    }
-
-    chai.expect(await list).to.deep.equal([0, 1, 1, 2, 4, 5]);
+    chai.expect(await list).to.deep.equal([1, 5, 6]);
   });
 });

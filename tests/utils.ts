@@ -19,7 +19,7 @@ export async function waitTicks(n: number = 5) {
 let uid = 0;
 const { port1, port2 } = new MessageChannel();
 port2.start();
-export async function waitTask() {
+export function waitTask() {
   const localId = uid++;
   port1.postMessage(localId);
   return new Promise(resolve => {
@@ -31,4 +31,8 @@ export async function waitTask() {
       resolve();
     });
   });
+}
+
+export function waitMs(ms = 5) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
