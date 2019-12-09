@@ -14,6 +14,7 @@
 export * from "./buffer.js";
 export * from "./buffer-with-count.js";
 export * from "./combine-latest-with.js";
+export * from "./concat-all.js";
 export * from "./debounce.js";
 export * from "./distinct.js";
 export * from "./exhaust.js";
