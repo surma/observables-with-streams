@@ -11,15 +11,22 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-async-function.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-next.js";
-export * from "./from-promise.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./of.js";
-export * from "./range.js";
-export * from "./repeat.js";
+import { Observable } from "../types.js";
+import { external, NextFunc } from "./external.js";
+
+/**
+ * Creates an observable from a function that gets passed the
+ * observable's `next()` function.
+ *
+ * See also {@link external}.
+ *
+ * @typeparam T Type of items to be emitted by the observable.
+ * @param f Function that will be executed with the
+ * observable's `next()` function.
+ * @returns New observable.
+ */
+export function fromNext<T>(f: (next: NextFunc<T>) => unknown): Observable<T> {
+  const { observable, next } = external<T>();
+  f(next);
+  return observable;
+}
