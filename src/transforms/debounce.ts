@@ -33,6 +33,7 @@ export function debounce<T>(ms: number): Transform<T> {
         clearTimeout(timeout);
       }
       timeoutP = new Promise(resolve => {
+        // @ts-ignore NodeJS types are interfering here
         timeout = setTimeout(() => {
           controller.enqueue(savedChunk);
           timeout = 0;

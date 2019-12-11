@@ -43,7 +43,7 @@ module.exports = function(config) {
       bundlerOptions: {
         entrypoints: /\/?tests\//
       },
-      tsconfig: "./tsconfig.test.json",
+      tsconfig: "./tsconfig.test.json"
     },
     detectBrowsers: {
       enabled: true,
