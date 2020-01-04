@@ -11,12 +11,11 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { amb } from "./amb.js";
+import { discard } from "./discard.js";
 
 /**
- * Alias for {@link amb}.
+ * Alias for {@link discard}.
  */
-export function race<T>(...os: Array<Observable<T>>): Observable<T> {
-  return amb(...os);
+export function subscribe<T>(f: (v: T) => void = () => {}) {
+  return discard(f);
 }
