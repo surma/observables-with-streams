@@ -36,7 +36,7 @@ The goal of this library is to implement observables making as much use of the p
       ows.scan((v0, v1) => v0 + v1, 0)
     )
     .pipeTo(
-      ows.discard(
+      ows.subscribe(
         v => document.querySelector("#counter").textContent = v
       )
     );
