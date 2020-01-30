@@ -26,9 +26,10 @@ import { external } from "./external.js";
  */
 export function fromEvent<K extends EventTarget, T extends Event = Event>(
   el: K,
-  name: string
+  name: string,
+  options?: boolean | AddEventListenerOptions
 ): Observable<T> {
   const { next, observable } = external<T>();
-  el.addEventListener(name, next as any);
+  el.addEventListener(name, next as any, options);
   return observable;
 }
