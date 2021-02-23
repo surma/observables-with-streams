@@ -9,8 +9,11 @@
     "test": "CHROME_ONLY=1 karma start",
     "prepublish": "npm run build"
   },
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "default": "./dist/index.js"
+  },
   "author": "Surma <surma@surma.link>",
   "license": "Apache-2.0",
   "devDependencies": {
