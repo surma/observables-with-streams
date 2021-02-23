@@ -27,24 +27,28 @@ import { Observable, Transform } from "../types.js";
  */
 export function sample<T>(notifier: Observable<unknown>): Transform<T, T> {
   let lastReceived: T[] = [];
-  return new TransformStream<T, T>({
-    start(controller) {
-      (async () => {
-        const reader = notifier.getReader();
-        while (true) {
-          const { done } = await reader.read();
-          if (done) {
-            return;
+  return new TransformStream<T, T>(
+    {
+      start(controller) {
+        (async () => {
+          const reader = notifier.getReader();
+          while (true) {
+            const { done } = await reader.read();
+            if (done) {
+              return;
+            }
+            if (lastReceived.length === 0) {
+              continue;
+            }
+            controller.enqueue(lastReceived.pop()!);
           }
-          if (lastReceived.length === 0) {
-            continue;
-          }
-          controller.enqueue(lastReceived.pop()!);
-        }
-      })();
+        })();
+      },
+      transform(chunk, controller) {
+        lastReceived[0] = chunk;
+      }
     },
-    transform(chunk, controller) {
-      lastReceived[0] = chunk;
-    }
-  });
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

@@ -22,14 +22,18 @@ import { Transform } from "../types.js";
  * @returns Transform that emits some items from the original observable.
  */
 export function take<T>(n: number): Transform<T> {
-  return new TransformStream<T, T>({
-    transform(chunk, controller) {
-      if (n > 0) {
-        controller.enqueue(chunk);
+  return new TransformStream<T, T>(
+    {
+      transform(chunk, controller) {
+        if (n > 0) {
+          controller.enqueue(chunk);
+        }
+        if (--n <= 0) {
+          controller.terminate();
+        }
       }
-      if (--n <= 0) {
-        controller.terminate();
-      }
-    }
-  });
+    },
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

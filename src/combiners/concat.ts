@@ -22,7 +22,11 @@ import { Observable } from "../types.js";
  * @returns Observable that emits items from all observables.
  */
 export function concat<T>(...os: Array<Observable<T>>): Observable<T> {
-  const { writable, readable } = new TransformStream<T, T>();
+  const { writable, readable } = new TransformStream<T, T>(
+    undefined,
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
   (async function() {
     for (const o of os) {
       await o.pipeTo(writable, { preventClose: true });

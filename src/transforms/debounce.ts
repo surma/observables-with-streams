@@ -26,23 +26,27 @@ export function debounce<T>(ms: number): Transform<T> {
   let timeout: number;
   let timeoutP: Promise<unknown>;
   let savedChunk: T;
-  return new TransformStream({
-    transform(chunk, controller) {
-      savedChunk = chunk;
-      if (timeout > 0) {
-        clearTimeout(timeout);
+  return new TransformStream(
+    {
+      transform(chunk, controller) {
+        savedChunk = chunk;
+        if (timeout > 0) {
+          clearTimeout(timeout);
+        }
+        timeoutP = new Promise(resolve => {
+          // @ts-ignore NodeJS types are interfering here
+          timeout = setTimeout(() => {
+            controller.enqueue(savedChunk);
+            timeout = 0;
+            resolve(undefined);
+          }, ms);
+        });
+      },
+      async flush() {
+        await timeoutP;
       }
-      timeoutP = new Promise(resolve => {
-        // @ts-ignore NodeJS types are interfering here
-        timeout = setTimeout(() => {
-          controller.enqueue(savedChunk);
-          timeout = 0;
-          resolve();
-        }, ms);
-      });
     },
-    async flush() {
-      await timeoutP;
-    }
-  });
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

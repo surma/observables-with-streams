@@ -46,7 +46,11 @@ import { Observable, Transform } from "../types.js";
 export function subchain<S, T>(
   f: (x: Observable<S>) => Observable<T>
 ): Transform<S, T> {
-  const { readable, writable } = new TransformStream();
+  const { readable, writable } = new TransformStream(
+    undefined,
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
   return {
     writable,
     readable: f(readable)

@@ -27,15 +27,18 @@ export type NextFunc<T> = (v: T | typeof EOF) => void;
  */
 export function external<T>() {
   let next: NextFunc<T>;
-  const observable = new ReadableStream<T>({
-    async start(controller) {
-      next = (v: T | typeof EOF) => {
-        if (v === EOF) {
-          return controller.close();
-        }
-        controller.enqueue(v);
-      };
-    }
-  });
+  const observable = new ReadableStream<T>(
+    {
+      async start(controller) {
+        next = (v: T | typeof EOF) => {
+          if (v === EOF) {
+            return controller.close();
+          }
+          controller.enqueue(v);
+        };
+      }
+    },
+    { highWaterMark: 0 }
+  );
   return { observable, next: next! };
 }

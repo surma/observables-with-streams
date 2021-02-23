@@ -19,9 +19,12 @@
  * @param f Function to call for each value before it’s discarded.
  */
 export function discard<T>(f: (v: T) => void = () => {}) {
-  return new WritableStream<T>({
-    write(chunk: T) {
-      f(chunk);
-    }
-  });
+  return new WritableStream<T>(
+    {
+      write(chunk: T) {
+        f(chunk);
+      }
+    },
+    { highWaterMark: 0 }
+  );
 }

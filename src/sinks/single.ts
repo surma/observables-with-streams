@@ -30,5 +30,5 @@ export async function single<T>(o: Observable<T>): Promise<T> {
   if (!(await reader.read()).done) {
     throw new Error("Observable emitted more than one item");
   }
-  return value;
+  return value!;
 }

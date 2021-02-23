@@ -24,9 +24,13 @@ import { Transform } from "../types.js";
  * @returns Transform that emits items produced by `f`.
  */
 export function map<S, T>(f: (x: S) => T | Promise<T>): Transform<S, T> {
-  return new TransformStream<S, T>({
-    async transform(chunk, controller) {
-      controller.enqueue(await f(chunk));
-    }
-  });
+  return new TransformStream<S, T>(
+    {
+      async transform(chunk, controller) {
+        controller.enqueue(await f(chunk));
+      }
+    },
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

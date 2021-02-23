@@ -27,18 +27,22 @@ export function distinct<T>(
 ): Transform<T> {
   let last: T;
   let hasLast = false;
-  return new TransformStream<T, T>({
-    transform(chunk, controller) {
-      if (!hasLast) {
+  return new TransformStream<T, T>(
+    {
+      transform(chunk, controller) {
+        if (!hasLast) {
+          last = chunk;
+          hasLast = true;
+          controller.enqueue(chunk);
+          return;
+        }
+        if (!f(chunk, last)) {
+          controller.enqueue(chunk);
+        }
         last = chunk;
-        hasLast = true;
-        controller.enqueue(chunk);
-        return;
       }
-      if (!f(chunk, last)) {
-        controller.enqueue(chunk);
-      }
-      last = chunk;
-    }
-  });
+    },
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

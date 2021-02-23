@@ -22,10 +22,13 @@ import { Observable } from "../types.js";
  * @returns New observable that emits the value the promise settles with.
  */
 export function fromPromise<T>(p: Promise<T>): Observable<T> {
-  return new ReadableStream({
-    async start(controller) {
-      controller.enqueue(await p);
-      controller.close();
-    }
-  });
+  return new ReadableStream(
+    {
+      async start(controller) {
+        controller.enqueue(await p);
+        controller.close();
+      }
+    },
+    { highWaterMark: 0 }
+  );
 }

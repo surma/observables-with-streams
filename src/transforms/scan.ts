@@ -27,10 +27,14 @@ export type ScanFunc<U, T> = (acc: U, v: T) => U;
  * @returns Transform that emits accumulated values produced by `f`.
  */
 export function scan<U, T>(f: ScanFunc<U, T>, v0: U): Transform<T, U> {
-  return new TransformStream<T, U>({
-    transform(chunk, controller) {
-      v0 = f(v0, chunk);
-      controller.enqueue(v0);
-    }
-  });
+  return new TransformStream<T, U>(
+    {
+      transform(chunk, controller) {
+        v0 = f(v0, chunk);
+        controller.enqueue(v0);
+      }
+    },
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

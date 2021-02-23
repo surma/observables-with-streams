@@ -25,7 +25,11 @@ import { merge } from "../combiners/merge.js";
  * @returns Transform that emits items from both observables.
  */
 export function mergeWith<S, T>(other: Observable<T>): Transform<S, S | T> {
-  const { readable, writable } = new TransformStream();
+  const { readable, writable } = new TransformStream(
+    undefined,
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
   return {
     writable,
     readable: merge(readable, other)

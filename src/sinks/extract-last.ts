@@ -30,7 +30,7 @@ export async function extractLast<T>(o: Observable<T>): Promise<T> {
     if (done) {
       break;
     }
-    latestValue = value;
+    latestValue = value!;
     hasLatestValue = true;
   }
   if (!hasLatestValue) {

@@ -24,12 +24,16 @@ import { Transform } from "../types.js";
  * @returns Transform that emits some items from the original observable.
  */
 export function takeWhile<T>(f: (v: T) => boolean): Transform<T> {
-  return new TransformStream<T, T>({
-    transform(chunk, controller) {
-      if (!f(chunk)) {
-        return controller.terminate();
+  return new TransformStream<T, T>(
+    {
+      transform(chunk, controller) {
+        if (!f(chunk)) {
+          return controller.terminate();
+        }
+        controller.enqueue(chunk);
       }
-      controller.enqueue(chunk);
-    }
-  });
+    },
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

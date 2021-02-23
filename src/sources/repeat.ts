@@ -20,9 +20,12 @@ import { Observable } from "../types.js";
  * @returns New observable that emits the same value multiple times.
  */
 export function repeat<T>(v: T): Observable<T> {
-  return new ReadableStream<T>({
-    pull(controller) {
-      controller.enqueue(v);
-    }
-  });
+  return new ReadableStream<T>(
+    {
+      pull(controller) {
+        controller.enqueue(v);
+      }
+    },
+    { highWaterMark: 0 }
+  );
 }

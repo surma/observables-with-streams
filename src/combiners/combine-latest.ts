@@ -35,25 +35,28 @@ export function combineLatest<T1, T2, T3>(
 export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
   const hasValue = new Set<ReadableStreamDefaultReader>();
-  const latestValue: Array<T | null> = os.map(() => null);
-  return new ReadableStream<T[]>({
-    async start(controller) {
-      const forwarders = os.map(async (o, idx) => {
-        const reader = o.getReader();
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) {
-            return;
+  const latestValue: Array<T | undefined | void> = os.map(() => {});
+  return new ReadableStream<T[]>(
+    {
+      async start(controller) {
+        const forwarders = os.map(async (o, idx) => {
+          const reader = o.getReader();
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) {
+              return;
+            }
+            latestValue[idx] = value;
+            hasValue.add(reader);
+            if (hasValue.size === os.length) {
+              controller.enqueue([...(latestValue as T[])]);
+            }
           }
-          latestValue[idx] = value;
-          hasValue.add(reader);
-          if (hasValue.size === os.length) {
-            controller.enqueue([...(latestValue as T[])]);
-          }
-        }
-      });
-      await Promise.all(forwarders);
-      controller.close();
-    }
-  });
+        });
+        await Promise.all(forwarders);
+        controller.close();
+      }
+    },
+    { highWaterMark: 0 }
+  );
 }

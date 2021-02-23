@@ -25,12 +25,16 @@ import { Transform } from "../types.js";
 export function forEach<T>(
   f: (x: T) => Promise<unknown> | unknown
 ): Transform<T> {
-  return new TransformStream<T, T>({
-    async transform(chunk, controller) {
-      controller.enqueue(chunk);
-      try {
-        await f(chunk);
-      } catch (e) {}
-    }
-  });
+  return new TransformStream<T, T>(
+    {
+      async transform(chunk, controller) {
+        controller.enqueue(chunk);
+        try {
+          await f(chunk);
+        } catch (e) {}
+      }
+    },
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

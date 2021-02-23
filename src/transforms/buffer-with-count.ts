@@ -22,18 +22,22 @@ import { Transform } from "../types.js";
  */
 export function bufferWithCount<T>(count: number): Transform<T, T[]> {
   let buffer: T[] = [];
-  return new TransformStream<T, T[]>({
-    async transform(chunk, controller) {
-      buffer.push(chunk);
-      if (buffer.length === count) {
-        controller.enqueue(buffer);
-        buffer = [];
+  return new TransformStream<T, T[]>(
+    {
+      async transform(chunk, controller) {
+        buffer.push(chunk);
+        if (buffer.length === count) {
+          controller.enqueue(buffer);
+          buffer = [];
+        }
+      },
+      flush(controller) {
+        if (buffer.length > 0) {
+          controller.enqueue(buffer);
+        }
       }
     },
-    flush(controller) {
-      if (buffer.length > 0) {
-        controller.enqueue(buffer);
-      }
-    }
-  });
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
 }

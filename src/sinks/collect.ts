@@ -28,6 +28,6 @@ export async function collect<T>(o: Observable<T>): Promise<T[]> {
     if (done) {
       return buffer;
     }
-    buffer.push(value);
+    buffer.push(value!);
   }
 }

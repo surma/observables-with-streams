@@ -23,7 +23,11 @@ import { extractLast, discard } from "../sinks/index.js";
  * observable.
  */
 export function last<T>(): Transform<T> {
-  const { readable, writable } = new TransformStream<T, T>();
+  const { readable, writable } = new TransformStream<T, T>(
+    undefined,
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
   const { observable, next } = external<T>();
   (async function() {
     const first = await extractLast(readable);

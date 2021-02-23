@@ -32,18 +32,21 @@ export function zip<T1, T2, T3>(
 ): Observable<[T1, T2, T3]>;
 export function zip<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function zip<T>(...os: Array<Observable<T>>): Observable<T[]> {
-  return new ReadableStream<T[]>({
-    async start(controller) {
-      const readers = os.map(o => o.getReader());
-      while (true) {
-        const values = await Promise.all(readers.map(r => r.read()));
-        if (values.some(({ done }) => done)) {
-          break;
+  return new ReadableStream<T[]>(
+    {
+      async start(controller) {
+        const readers = os.map(o => o.getReader());
+        while (true) {
+          const values = await Promise.all(readers.map(r => r.read()));
+          if (values.some(({ done }) => done)) {
+            break;
+          }
+          controller.enqueue(values.map(({ value }) => value!));
         }
-        controller.enqueue(values.map(({ value }) => value));
+        readers.forEach(r => r.releaseLock());
+        controller.close();
       }
-      readers.forEach(r => r.releaseLock());
-      controller.close();
-    }
-  });
+    },
+    { highWaterMark: 0 }
+  );
 }

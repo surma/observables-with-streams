@@ -29,5 +29,5 @@ export async function extractFirst<T>(o: Observable<T>): Promise<T> {
     throw new Error("Observable finished without emitting any items");
   }
   reader.releaseLock();
-  return value;
+  return value!;
 }

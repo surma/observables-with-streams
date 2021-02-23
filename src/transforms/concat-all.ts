@@ -22,16 +22,23 @@ import { externalPromise } from "../utils.js";
  * @returns Transform that emits items from the inner observables.
  */
 export function concatAll<T>(): Transform<Observable<T>, T> {
-  const { readable, writable } = new TransformStream();
+  const { readable, writable } = new TransformStream(
+    undefined,
+    { highWaterMark: 0 },
+    { highWaterMark: 0 }
+  );
   return {
-    writable: new WritableStream({
-      async write(o) {
-        await o.pipeTo(writable, { preventClose: true });
+    writable: new WritableStream(
+      {
+        async write(o) {
+          await o.pipeTo(writable, { preventClose: true });
+        },
+        close() {
+          writable.getWriter().close();
+        }
       },
-      close() {
-        writable.getWriter().close();
-      }
-    }),
+      { highWaterMark: 0 }
+    ),
     readable
   };
 }
