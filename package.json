@@ -1,6 +1,6 @@
 {
   "name": "observables-with-streams",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A library of observables built with streams",
   "scripts": {
     "fmt": "prettier --write './{src,tests}/**/*.ts' *.{md,json,js}",
