@@ -47,7 +47,7 @@ export function buffer<T>(notifier: Observable<unknown>): Transform<T, T[]> {
         buffer.push(chunk);
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

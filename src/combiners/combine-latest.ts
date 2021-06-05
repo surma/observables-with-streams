@@ -34,8 +34,8 @@ export function combineLatest<T1, T2, T3>(
 ): Observable<[T1, T2, T3]>;
 export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
-  const hasValue = new Set<ReadableStreamDefaultReader>();
-  const latestValue: Array<T | undefined | void> = os.map(() => {});
+  const NONE = Symbol();
+  const latestValue: Array<T | typeof NONE> = os.map(() => NONE);
   return new ReadableStream<T[]>(
     {
       async start(controller) {
@@ -46,9 +46,8 @@ export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
             if (done) {
               return;
             }
-            latestValue[idx] = value;
-            hasValue.add(reader);
-            if (hasValue.size === os.length) {
+            latestValue[idx] = value!;
+            if (!latestValue.includes(NONE)) {
               controller.enqueue([...(latestValue as T[])]);
             }
           }

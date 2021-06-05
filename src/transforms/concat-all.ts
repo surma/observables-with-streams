@@ -24,7 +24,7 @@ import { externalPromise } from "../utils.js";
 export function concatAll<T>(): Transform<Observable<T>, T> {
   const { readable, writable } = new TransformStream(
     undefined,
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
   return {
@@ -37,7 +37,7 @@ export function concatAll<T>(): Transform<Observable<T>, T> {
           writable.getWriter().close();
         }
       },
-      { highWaterMark: 0 }
+      { highWaterMark: 1 }
     ),
     readable
   };

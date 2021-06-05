@@ -26,7 +26,7 @@ import { zip } from "../combiners/zip.js";
 export function zipWith<S, T>(other: Observable<T>): Transform<S, [S, T]> {
   const { readable, writable } = new TransformStream<S, S>(
     undefined,
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 

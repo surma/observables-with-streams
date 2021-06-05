@@ -24,7 +24,7 @@ import { Observable } from "../types.js";
 export function concat<T>(...os: Array<Observable<T>>): Observable<T> {
   const { writable, readable } = new TransformStream<T, T>(
     undefined,
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
   (async function() {

@@ -28,7 +28,7 @@ import { switchAll } from "./switch-all.js";
 export function switchMap<T, S>(f: (v: T) => Observable<S>): Transform<T, S> {
   const { readable, writable } = new TransformStream<T, T>(
     undefined,
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
   return {

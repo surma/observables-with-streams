@@ -46,7 +46,7 @@ export function debounce<T>(ms: number): Transform<T> {
         await timeoutP;
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

@@ -22,13 +22,13 @@ port2.start();
 export function waitTask() {
   const localId = uid++;
   port1.postMessage(localId);
-  return new Promise(resolve => {
+  return new Promise<null>(resolve => {
     port2.addEventListener("message", function f(ev) {
       if (ev.data !== localId) {
         return;
       }
       port2.removeEventListener("message", f);
-      resolve();
+      resolve(null);
     });
   });
 }

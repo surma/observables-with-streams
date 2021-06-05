@@ -34,7 +34,7 @@ export function forEach<T>(
         } catch (e) {}
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

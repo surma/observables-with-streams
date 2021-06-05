@@ -42,7 +42,7 @@ export function distinct<T>(
         last = chunk;
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

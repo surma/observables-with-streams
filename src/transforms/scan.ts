@@ -34,7 +34,7 @@ export function scan<U, T>(f: ScanFunc<U, T>, v0: U): Transform<T, U> {
         controller.enqueue(v0);
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

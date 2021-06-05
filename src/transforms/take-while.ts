@@ -33,7 +33,7 @@ export function takeWhile<T>(f: (v: T) => boolean): Transform<T> {
         controller.enqueue(chunk);
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

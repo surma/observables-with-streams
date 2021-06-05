@@ -38,7 +38,7 @@ export function combineLatestWith<T>(
 ): Transform<T, T[]> {
   const { readable, writable } = new TransformStream<T, T>(
     undefined,
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
   return { writable, readable: combineLatest(readable, ...others) };

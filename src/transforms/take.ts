@@ -33,7 +33,7 @@ export function take<T>(n: number): Transform<T> {
         }
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

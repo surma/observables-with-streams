@@ -30,7 +30,7 @@ export function map<S, T>(f: (x: S) => T | Promise<T>): Transform<S, T> {
         controller.enqueue(await f(chunk));
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

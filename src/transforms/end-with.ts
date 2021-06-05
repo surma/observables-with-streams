@@ -31,7 +31,7 @@ export function endWith<T>(...vs: T[]): Transform<T> {
         }
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

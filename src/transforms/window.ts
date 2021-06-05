@@ -30,7 +30,7 @@ export function window<T>(
 ): Transform<T, Observable<T>> {
   const { readable, writable } = new TransformStream(
     undefined,
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
   return {

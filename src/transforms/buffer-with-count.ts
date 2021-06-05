@@ -37,7 +37,7 @@ export function bufferWithCount<T>(count: number): Transform<T, T[]> {
         }
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }

@@ -48,7 +48,7 @@ export function sample<T>(notifier: Observable<unknown>): Transform<T, T> {
         lastReceived[0] = chunk;
       }
     },
-    { highWaterMark: 0 },
+    { highWaterMark: 1 },
     { highWaterMark: 0 }
   );
 }
