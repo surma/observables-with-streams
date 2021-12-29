@@ -20,7 +20,7 @@ import { Observable } from "../types.ts";
  * @returns New observable that emits null values.
  */
 export function fromTimer(ms: number): Observable<null> {
-  let timer: number | undefined;
+  let timer: ReturnType<typeof setInterval> | undefined;
   return new ReadableStream({
     start(controller) {
       timer = setInterval(() => {
@@ -28,7 +28,9 @@ export function fromTimer(ms: number): Observable<null> {
       }, ms);
     },
     cancel() {
-      clearInterval(timer);
+      if (timer !== undefined) {
+        clearInterval(timer);
+      }
     },
   });
 }
