@@ -61,7 +61,8 @@ platform as possible and being highly tree-shakeable.
 
 ## Documentation
 
-<!-- TODO(lucacasonato): link to doc.deno.land -->
+You can view docs on:
+https://doc.deno.land/https://raw.githubusercontent.com/surma/observables-with-streams/28c55be6d855780c677fd1f4ba975f4d3144891d/src/index.ts
 
 ## Caveats
 
