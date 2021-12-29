@@ -10,12 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, last, collect } from "../../src/index.js";
+import { collect, last, range } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("last()", function() {
-  Mocha.it("returns the last item", async function() {
+Deno.test("last()", async function (t) {
+  await t.step("returns the last item", async function () {
     const list = await collect(range(1, 4).pipeThrough(last()));
 
-    chai.expect(list).to.deep.equal([4]);
+    assertEquals(list, [4]);
   });
 });

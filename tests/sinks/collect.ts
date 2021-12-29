@@ -10,12 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, collect } from "../../src/index.js";
+import { collect, fromIterable } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("collect()", function() {
-  Mocha.it("returns all items with an array", async function() {
+Deno.test("collect()", async function (t) {
+  await t.step("returns all items with an array", async function () {
     const iterable = [1, 2, 3, 4];
     const collection = await collect(fromIterable(iterable));
-    chai.expect(collection).to.deep.equal(iterable);
+    assertEquals(collection, iterable);
   });
 });

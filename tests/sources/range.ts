@@ -10,16 +10,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, collect } from "../../src/index.js";
+import { collect, range } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("range()", function() {
-  Mocha.it("emits a series of integers", async function() {
+Deno.test("range()", async function (t) {
+  await t.step("emits a series of integers", async function () {
     const list = await collect(range(-2, 2));
-    chai.expect(list).to.deep.equal([-2, -1, 0, 1, 2]);
+    assertEquals(list, [-2, -1, 0, 1, 2]);
   });
 
-  Mocha.it("can count backwards", async function() {
+  await t.step("can count backwards", async function () {
     const list = await collect(range(2, -2));
-    chai.expect(list).to.deep.equal([2, 1, 0, -1, -2]);
+    assertEquals(list, [2, 1, 0, -1, -2]);
   });
 });

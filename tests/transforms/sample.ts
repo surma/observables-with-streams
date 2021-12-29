@@ -10,12 +10,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { sample, collect, external, EOF } from "../../src/index.js";
+import { collect, EOF, external, sample } from "../../src/index.ts";
 
-import { waitTicks } from "../utils.js";
+import { assertEquals, waitTicks } from "../utils.ts";
 
-Mocha.describe("sample()", function() {
-  Mocha.it("emits samples", async function() {
+Deno.test("sample()", async function (t) {
+  await t.step("emits samples", async function () {
     const notifier = external();
     const { observable, next } = external();
 
@@ -42,6 +42,6 @@ Mocha.describe("sample()", function() {
     next(EOF);
     await waitTicks();
 
-    chai.expect(await listP).to.deep.equal([2, 3]);
+    assertEquals(await listP, [2, 3]);
   });
 });

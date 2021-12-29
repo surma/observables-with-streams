@@ -10,30 +10,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { external, debounce, collect, EOF } from "../../src/index.js";
-import { waitMs } from "../utils.js";
+import { collect, debounce, EOF, external } from "../../src/index.ts";
+import { assertEquals, waitMs } from "../utils.ts";
 
-Mocha.describe("debounce()", function() {
-  Mocha.it("debounces an observable", async function() {
+Deno.test("debounce()", async function (t) {
+  await t.step("debounces an observable", async function () {
     const { observable, next } = external<number>();
 
     const list = collect(observable.pipeThrough(debounce(9)));
 
-    await next(0);
+    next(0);
     await waitMs(5);
-    await next(1);
+    next(1);
     await waitMs(10);
-    await next(2);
+    next(2);
     await waitMs(1);
-    await next(3);
+    next(3);
     await waitMs(1);
-    await next(4);
+    next(4);
     await waitMs(1);
-    await next(5);
+    next(5);
     await waitMs(10);
-    await next(6);
-    await next(EOF);
+    next(6);
+    next(EOF);
 
-    chai.expect(await list).to.deep.equal([1, 5, 6]);
+    assertEquals(await list, [1, 5, 6]);
   });
 });

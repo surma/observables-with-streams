@@ -10,11 +10,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { external, mergeWith, collect, EOF } from "../../src/index.js";
-import { waitTicks } from "../utils.js";
+import { collect, EOF, external, mergeWith } from "../../src/index.ts";
+import { assertEquals, waitTicks } from "../utils.ts";
 
-Mocha.describe("mergeWith()", function() {
-  Mocha.it("combines 2 observables", async function() {
+Deno.test("mergeWith()", async function (t) {
+  await t.step("combines 2 observables", async function () {
     const { observable: o1, next: n1 } = external<number>();
     const { observable: o2, next: n2 } = external<number>();
 
@@ -31,7 +31,7 @@ Mocha.describe("mergeWith()", function() {
       () => n1(7),
       () => n1(EOF),
       () => n2(8),
-      () => n2(EOF)
+      () => n2(EOF),
     ];
 
     for (const step of steps) {
@@ -39,6 +39,6 @@ Mocha.describe("mergeWith()", function() {
       await waitTicks();
     }
 
-    chai.expect(await list).to.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    assertEquals(await list, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
   });
 });

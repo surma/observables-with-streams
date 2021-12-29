@@ -11,11 +11,11 @@
  * limitations under the License.
  */
 
-import { external, EOF, concat, collect, range } from "../../src/index.js";
-import { waitTicks } from "../utils.js";
+import { collect, concat, EOF, external, range } from "../../src/index.ts";
+import { assertEquals, waitTicks } from "../utils.ts";
 
-Mocha.describe("concat()", function() {
-  Mocha.it("concatenates multiple observables", async function() {
+Deno.test("concat()", async function (t) {
+  await t.step("concatenates multiple observables", async function () {
     const { observable, next } = external();
     const list = collect(concat(range(1, 3), observable, range(5, 7)));
 
@@ -26,6 +26,6 @@ Mocha.describe("concat()", function() {
       next(EOF);
     })();
 
-    chai.expect(await list).to.deep.equal([1, 2, 3, 4, 5, 6, 7]);
+    assertEquals(await list, [1, 2, 3, 4, 5, 6, 7]);
   });
 });

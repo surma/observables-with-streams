@@ -10,15 +10,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { repeat, range, zipWith, collect } from "../../src/index.js";
+import { collect, range, repeat, zipWith } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("repeat()", function() {
-  Mocha.it("repeats the same value infinitely", async function() {
+Deno.test("repeat()", async function (t) {
+  await t.step("repeats the same value infinitely", async function () {
     const list = await collect(repeat("hai").pipeThrough(zipWith(range(1, 3))));
-    chai.expect(list).to.deep.equal([
+    assertEquals(list, [
       ["hai", 1],
       ["hai", 2],
-      ["hai", 3]
+      ["hai", 3],
     ]);
   });
 });

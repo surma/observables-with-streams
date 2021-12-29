@@ -10,12 +10,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, map, collect } from "../../src/index.js";
+import { collect, map, range } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("map()", function() {
-  Mocha.it("maps each item", async function() {
-    const list = await collect(range(1, 3).pipeThrough(map(async x => x + 1)));
+Deno.test("map()", async function (t) {
+  await t.step("maps each item", async function () {
+    const list = await collect(
+      range(1, 3).pipeThrough(map(async (x) => x + 1)),
+    );
 
-    chai.expect(list).to.deep.equal([2, 3, 4]);
+    assertEquals(list, [2, 3, 4]);
   });
 });

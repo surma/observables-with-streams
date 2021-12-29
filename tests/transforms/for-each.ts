@@ -10,54 +10,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, forEach, collect, range } from "../../src/index.js";
-import { waitTicks, waitTask } from "../utils.js";
+import { collect, forEach, fromIterable, range } from "../../src/index.ts";
+import { assertEquals, waitTask } from "../utils.ts";
 
-Mocha.describe("forEach()", function() {
-  Mocha.it("executes for each item", async function() {
+Deno.test("forEach()", async function (t) {
+  await t.step("executes for each item", async function () {
     const iterable = [1, 2, 3];
     let callCount = 0;
     const list = await collect(
       fromIterable(iterable).pipeThrough(
-        forEach(x => {
+        forEach((x) => {
           callCount++;
           return x + 1;
-        })
-      )
+        }),
+      ),
     );
 
-    chai.expect(list).to.deep.equal(iterable);
-    chai.expect(callCount).to.equal(iterable.length);
+    assertEquals(list, iterable);
+    assertEquals(callCount, iterable.length);
   });
 
-  Mocha.it("waits until item has been processed", function(done) {
-    let processing = false;
-    collect(
-      range(1, 4).pipeThrough(
-        forEach(async v => {
-          if (processing) {
-            done("Next item got processed before previous was done");
-          }
-          processing = true;
-          await waitTask();
-          processing = false;
-        })
-      )
-    ).then(list => {
-      chai.expect(list).to.deep.equal([1, 2, 3, 4]);
-      done();
+  await await t.step("waits until item has been processed", function () {
+    return new Promise((resolve, reject) => {
+      let processing = false;
+      collect(
+        range(1, 4).pipeThrough(
+          forEach(async () => {
+            if (processing) {
+              reject("Next item got processed before previous was done");
+            }
+            processing = true;
+            await waitTask();
+            processing = false;
+          }),
+        ),
+      ).then((list) => {
+        assertEquals(list, [1, 2, 3, 4]);
+        resolve();
+      });
     });
   });
 
-  Mocha.it("does not fail when function throws", async function() {
+  await t.step("does not fail when function throws", async function () {
     const list = await collect(
       range(1, 4).pipeThrough(
-        forEach(x => {
+        forEach(() => {
           throw Error("LOL");
-        })
-      )
+        }),
+      ),
     );
 
-    chai.expect(list).to.deep.equal([1, 2, 3, 4]);
+    assertEquals(list, [1, 2, 3, 4]);
   });
 });

@@ -10,13 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { external, amb, collect, EOF } from "../../src/index.js";
-import { waitTicks } from "../utils.js";
+import { amb, collect, EOF, external } from "../../src/index.ts";
+import { assertEquals, waitTicks } from "../utils.ts";
 
-Mocha.describe("amb()", function() {
-  Mocha.it(
+Deno.test("amb()", async function (t) {
+  await t.step(
     "emits items from the observable that emits first",
-    async function() {
+    async function () {
       const { observable: o1, next: n1 } = external<number>();
       const { observable: o2, next: n2 } = external<number>();
       const { observable: o3, next: n3 } = external<number>();
@@ -29,7 +29,7 @@ Mocha.describe("amb()", function() {
         () => n2(1),
         () => n2(10),
         () => n3(100),
-        () => n3(EOF)
+        () => n3(EOF),
       ];
 
       for (const step of steps) {
@@ -37,7 +37,7 @@ Mocha.describe("amb()", function() {
         await waitTicks();
       }
 
-      chai.expect(await list).to.deep.equal([0, 100]);
-    }
+      assertEquals(await list, [0, 100]);
+    },
   );
 });

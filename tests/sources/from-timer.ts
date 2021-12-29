@@ -10,17 +10,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromTimer, forEach, discard } from "../../src/index.js";
+import { fromTimer } from "../../src/index.ts";
+import { assert } from "../utils.ts";
 
-Mocha.describe("fromTimer()", function() {
-  Mocha.it("emits null in the given interval", function(done) {
+Deno.test("fromTimer()", async function (t) {
+  await t.step("emits null in the given interval", async function () {
     const observable = fromTimer(10);
-    let list: any[] = [];
 
-    observable.pipeThrough(forEach(v => list.push(v))).pipeTo(discard());
-    setTimeout(() => {
-      chai.expect(list).to.have.length(4);
-      done();
-    }, 40);
+    const start = Date.now();
+    const reader = observable.getReader();
+    for (let i = 0; i < 4; i++) {
+      await reader.read();
+    }
+    const end = Date.now();
+    assert(end - start >= 40);
+
+    await reader.cancel();
   });
 });

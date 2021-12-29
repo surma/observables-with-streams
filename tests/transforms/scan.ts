@@ -10,17 +10,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, scan, collect } from "../../src/index.js";
+import { collect, range, scan } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("scan()", function() {
-  Mocha.it(
+Deno.test("scan()", async function (t) {
+  await t.step(
     "scans over an observable with a reducer function",
-    async function() {
+    async function () {
       const list = await collect(
-        range(1, 5).pipeThrough(scan((a, b) => a + b, 0))
+        range(1, 5).pipeThrough(scan((a, b) => a + b, 0)),
       );
 
-      chai.expect(list).to.deep.equal([1, 3, 6, 10, 15]);
-    }
+      assertEquals(list, [1, 3, 6, 10, 15]);
+    },
   );
 });

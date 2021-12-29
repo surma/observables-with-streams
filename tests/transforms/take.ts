@@ -10,12 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, take, collect } from "../../src/index.js";
+import { collect, range, take } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("take()", function() {
-  Mocha.it("takes the n first items", async function() {
+Deno.test("take()", async function (t) {
+  await t.step("takes the n first items", async function () {
     const list = await collect(range(1, 4).pipeThrough(take(2)));
 
-    chai.expect(list).to.deep.equal([1, 2]);
+    assertEquals(list, [1, 2]);
   });
 });

@@ -10,14 +10,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { collect, fromAsyncFunction } from "../../src/index.js";
+import { collect, fromAsyncFunction } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("fromAsyncFunction()", function() {
-  Mocha.it("creates observable", async function() {
+Deno.test("fromAsyncFunction()", async function (t) {
+  await t.step("creates observable", async function () {
     const observable = fromAsyncFunction(async () => {
       return 4;
     });
     const list = await collect(observable);
-    chai.expect(list).to.deep.equal([4]);
+    assertEquals(list, [4]);
   });
 });

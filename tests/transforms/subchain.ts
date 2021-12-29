@@ -10,18 +10,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, subchain, filter, map, collect } from "../../src/index.js";
+import { collect, filter, map, range, subchain } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("subchain()", function() {
-  Mocha.it("runs the subchain", async function() {
+Deno.test("subchain()", async function (t) {
+  await t.step("runs the subchain", async function () {
     const list = await collect(
       range(1, 10).pipeThrough(
-        subchain(o =>
-          o.pipeThrough(filter(v => v % 2 == 0)).pipeThrough(map(v => v * 3))
-        )
-      )
+        subchain((o) =>
+          o.pipeThrough(filter((v) => v % 2 == 0)).pipeThrough(
+            map((v) => v * 3),
+          )
+        ),
+      ),
     );
 
-    chai.expect(list).to.deep.equal([6, 12, 18, 24, 30]);
+    assertEquals(list, [6, 12, 18, 24, 30]);
   });
 });

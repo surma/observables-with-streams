@@ -10,14 +10,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { collect, just, switchMap, range } from "../../src/index.js";
+import { collect, just, range, switchMap } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("switch-all()", function() {
-  Mocha.it("re-emit the first observable", async function() {
+Deno.test("switch-all()", async function (t) {
+  await t.step("re-emit the first observable", async function () {
     const list = await collect(
-      just(5).pipeThrough(switchMap(v => range(1, v)))
+      just(5).pipeThrough(switchMap((v) => range(1, v))),
     );
 
-    chai.expect(list).to.deep.equal([1, 2, 3, 4, 5]);
+    assertEquals(list, [1, 2, 3, 4, 5]);
   });
 });

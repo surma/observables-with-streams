@@ -10,12 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, reduce } from "../../src/index.js";
+import { range, reduce } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("reduce()", function() {
-  Mocha.it("reduces over the items of an observable", async function() {
+Deno.test("reduce()", async function (t) {
+  await t.step("reduces over the items of an observable", async function () {
     const result = await reduce(range(1, 5), (a, b) => a + b, 0);
 
-    chai.expect(result).to.deep.equal(15);
+    assertEquals(result, 15);
   });
 });
