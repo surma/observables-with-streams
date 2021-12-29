@@ -22,6 +22,7 @@ await build({
 Deno.copyFileSync("LICENSE", "dist/LICENSE");
 Deno.copyFileSync("README.md", "dist/README.md");
 
+// Generate dist/dist/really-big-bundle.js
 const res = await rollup({
   input: "dist/esm/index.js",
   plugins: [
