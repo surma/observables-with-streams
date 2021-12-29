@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { fromPromise } from "./from-promise.js";
+import { Observable } from "../types.ts";
+import { fromPromise } from "./from-promise.ts";
 
 /**
  * Creates an observable from an asynchronous function. The observable

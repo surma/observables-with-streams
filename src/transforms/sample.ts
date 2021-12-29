@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable, Transform } from "../types.js";
+import { Observable, Transform } from "../types.ts";
 
 /**
  * Emits the most recently emitted value from the Observable whenever
@@ -26,7 +26,7 @@ import { Observable, Transform } from "../types.js";
  * the source observable has emitted a new value in the mean time.
  */
 export function sample<T>(notifier: Observable<unknown>): Transform<T, T> {
-  let lastReceived: T[] = [];
+  const lastReceived: T[] = [];
   return new TransformStream<T, T>(
     {
       start(controller) {
@@ -44,11 +44,11 @@ export function sample<T>(notifier: Observable<unknown>): Transform<T, T> {
           }
         })();
       },
-      transform(chunk, controller) {
+      transform(chunk) {
         lastReceived[0] = chunk;
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

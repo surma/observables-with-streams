@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { discard } from "./discard.js";
+import { discard } from "./discard.ts";
 
 /**
  * Alias for {@link discard}.

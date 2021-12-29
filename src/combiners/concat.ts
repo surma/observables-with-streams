@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Creates an output Observable which sequentially emits all values from
@@ -25,9 +25,9 @@ export function concat<T>(...os: Array<Observable<T>>): Observable<T> {
   const { writable, readable } = new TransformStream<T, T>(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
-  (async function() {
+  (async function () {
     for (const o of os) {
       await o.pipeTo(writable, { preventClose: true });
     }

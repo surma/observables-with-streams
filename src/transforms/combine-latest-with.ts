@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Transform, Observable } from "../types.js";
-import { combineLatest } from "../combiners/combine-latest.js";
+import { Observable, Transform } from "../types.ts";
+import { combineLatest } from "../combiners/combine-latest.ts";
 
 /**
  * Combines items from the original observable with the other observables.
@@ -24,11 +24,11 @@ import { combineLatest } from "../combiners/combine-latest.js";
  * @returns Transform that emits tuples of items.
  */
 export function combineLatestWith<S, T1>(
-  other: Observable<T1>
+  other: Observable<T1>,
 ): Transform<S, [S, T1]>;
 export function combineLatestWith<S, T1, T2>(
   o1: Observable<T1>,
-  o2: Observable<T2>
+  o2: Observable<T2>,
 ): Transform<S, [S, T1, T2]>;
 export function combineLatestWith<T>(
   ...others: Observable<T>[]
@@ -39,7 +39,7 @@ export function combineLatestWith<T>(
   const { readable, writable } = new TransformStream<T, T>(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   return { writable, readable: combineLatest(readable, ...others) };
 }

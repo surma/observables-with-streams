@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Combines items from multiple observables.
@@ -25,12 +25,12 @@ import { Observable } from "../types.js";
  */
 export function combineLatest<T1, T2>(
   o1: Observable<T1>,
-  o2: Observable<T2>
+  o2: Observable<T2>,
 ): Observable<[T1, T2]>;
 export function combineLatest<T1, T2, T3>(
   o1: Observable<T1>,
   o2: Observable<T2>,
-  o3: Observable<T3>
+  o3: Observable<T3>,
 ): Observable<[T1, T2, T3]>;
 export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
@@ -54,8 +54,8 @@ export function combineLatest<T>(...os: Array<Observable<T>>): Observable<T[]> {
         });
         await Promise.all(forwarders);
         controller.close();
-      }
+      },
     },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

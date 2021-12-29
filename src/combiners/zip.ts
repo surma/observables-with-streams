@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Zips items from multiple observables.
@@ -23,30 +23,30 @@ import { Observable } from "../types.js";
  */
 export function zip<T1, T2>(
   o1: Observable<T1>,
-  o2: Observable<T2>
+  o2: Observable<T2>,
 ): Observable<[T1, T2]>;
 export function zip<T1, T2, T3>(
   o1: Observable<T1>,
   o2: Observable<T2>,
-  o3: Observable<T3>
+  o3: Observable<T3>,
 ): Observable<[T1, T2, T3]>;
 export function zip<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function zip<T>(...os: Array<Observable<T>>): Observable<T[]> {
   return new ReadableStream<T[]>(
     {
       async start(controller) {
-        const readers = os.map(o => o.getReader());
+        const readers = os.map((o) => o.getReader());
         while (true) {
-          const values = await Promise.all(readers.map(r => r.read()));
+          const values = await Promise.all(readers.map((r) => r.read()));
           if (values.some(({ done }) => done)) {
             break;
           }
           controller.enqueue(values.map(({ value }) => value!));
         }
-        readers.forEach(r => r.releaseLock());
+        readers.forEach((r) => r.releaseLock());
         controller.close();
-      }
+      },
     },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

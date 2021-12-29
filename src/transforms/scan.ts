@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 export type ScanFunc<U, T> = (acc: U, v: T) => U;
 
@@ -32,9 +32,9 @@ export function scan<U, T>(f: ScanFunc<U, T>, v0: U): Transform<T, U> {
       transform(chunk, controller) {
         v0 = f(v0, chunk);
         controller.enqueue(v0);
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

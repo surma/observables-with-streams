@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Returns a `Transform` that emits the items specified as arguments
@@ -29,9 +29,9 @@ export function endWith<T>(...vs: T[]): Transform<T> {
         for (const v of vs) {
           controller.enqueue(v);
         }
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

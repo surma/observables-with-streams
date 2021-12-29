@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Collects items from the original observable into buffers of size `count`.
@@ -24,7 +24,7 @@ export function bufferWithCount<T>(count: number): Transform<T, T[]> {
   let buffer: T[] = [];
   return new TransformStream<T, T[]>(
     {
-      async transform(chunk, controller) {
+      transform(chunk, controller) {
         buffer.push(chunk);
         if (buffer.length === count) {
           controller.enqueue(buffer);
@@ -35,9 +35,9 @@ export function bufferWithCount<T>(count: number): Transform<T, T[]> {
         if (buffer.length > 0) {
           controller.enqueue(buffer);
         }
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

@@ -23,8 +23,8 @@ export function discard<T>(f: (v: T) => void = () => {}) {
     {
       write(chunk: T) {
         f(chunk);
-      }
+      },
     },
-    { highWaterMark: 1 }
+    { highWaterMark: 1 },
   );
 }

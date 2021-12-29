@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { external } from "./external.js";
+import { Observable } from "../types.ts";
+import { external } from "./external.ts";
 
 /**
  * Creates an observable that will forever emit `null` every `ms` milliseconds.

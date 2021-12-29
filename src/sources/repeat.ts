@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Creates an observable that forever emits the same value.
@@ -24,8 +24,8 @@ export function repeat<T>(v: T): Observable<T> {
     {
       pull(controller) {
         controller.enqueue(v);
-      }
+      },
     },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

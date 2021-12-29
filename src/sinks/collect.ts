@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Collects all values from the observable into an array.
@@ -21,7 +21,7 @@ import { Observable } from "../types.js";
  * @returns Promise that resolves with an array.
  */
 export async function collect<T>(o: Observable<T>): Promise<T[]> {
-  let buffer: T[] = [];
+  const buffer: T[] = [];
   const reader = o.getReader();
   while (true) {
     const { value, done } = await reader.read();

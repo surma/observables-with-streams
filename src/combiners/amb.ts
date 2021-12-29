@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Takes in multiple observables but only emits items from the first observable
@@ -25,7 +25,7 @@ export function amb<T>(...os: Array<Observable<T>>): Observable<T> {
   return new ReadableStream(
     {
       async start(controller) {
-        const readers = os.map(o => o.getReader());
+        const readers = os.map((o) => o.getReader());
         const reads = readers.map(async (r, i) => [await r.read(), i] as const);
         let [{ value, done }, i] = await Promise.race(reads);
         reads
@@ -42,8 +42,8 @@ export function amb<T>(...os: Array<Observable<T>>): Observable<T> {
           controller.enqueue(value!);
           ({ value, done } = await fastestObs.read());
         }
-      }
+      },
     },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

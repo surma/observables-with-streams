@@ -11,15 +11,15 @@
  * limitations under the License.
  */
 
-export * from "./external.js";
-export * from "./from-async-function.js";
-export * from "./from-event.js";
-export * from "./from-generator.js";
-export * from "./from-iterable.js";
-export * from "./from-next.js";
-export * from "./from-promise.js";
-export * from "./from-timer.js";
-export * from "./just.js";
-export * from "./of.js";
-export * from "./range.js";
-export * from "./repeat.js";
+export * from "./external.ts";
+export * from "./from-async-function.ts";
+export * from "./from-event.ts";
+export * from "./from-generator.ts";
+export * from "./from-iterable.ts";
+export * from "./from-next.ts";
+export * from "./from-promise.ts";
+export * from "./from-timer.ts";
+export * from "./just.ts";
+export * from "./of.ts";
+export * from "./range.ts";
+export * from "./repeat.ts";

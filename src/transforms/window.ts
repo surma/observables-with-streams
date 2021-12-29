@@ -11,10 +11,10 @@
  * limitations under the License.
  */
 
-import { Transform, Observable } from "../types.js";
-import { buffer } from "./buffer.js";
-import { map } from "./map.js";
-import { fromIterable } from "../sources/index.js";
+import { Observable, Transform } from "../types.ts";
+import { buffer } from "./buffer.ts";
+import { map } from "./map.ts";
+import { fromIterable } from "../sources/index.ts";
 
 /**
  * Branches out the source observable as nested observables whenever
@@ -26,17 +26,17 @@ import { fromIterable } from "../sources/index.js";
  * the original observable.
  */
 export function window<T>(
-  notifier: Observable<unknown>
+  notifier: Observable<unknown>,
 ): Transform<T, Observable<T>> {
   const { readable, writable } = new TransformStream(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   return {
     writable,
     readable: readable
       .pipeThrough(buffer<T>(notifier))
-      .pipeThrough(map(v => fromIterable(v)))
+      .pipeThrough(map((v) => fromIterable(v))),
   };
 }

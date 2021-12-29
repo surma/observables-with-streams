@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Calls a function for each item emitted by an observable without
@@ -23,7 +23,7 @@ import { Transform } from "../types.js";
  * @returns Transform that emits the same items as the original observable.
  */
 export function forEach<T>(
-  f: (x: T) => Promise<unknown> | unknown
+  f: (x: T) => Promise<unknown> | unknown,
 ): Transform<T> {
   return new TransformStream<T, T>(
     {
@@ -31,10 +31,12 @@ export function forEach<T>(
         controller.enqueue(chunk);
         try {
           await f(chunk);
-        } catch (e) {}
-      }
+        } catch {
+          // ignore the error
+        }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

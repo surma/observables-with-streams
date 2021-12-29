@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Returns a `Transform` that emits all items for which `f` returns true.
@@ -28,9 +28,9 @@ export function filter<T>(f: (x: T) => boolean): Transform<T> {
         if (f(chunk)) {
           controller.enqueue(chunk);
         }
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

@@ -14,8 +14,7 @@
 export function externalPromise<T = unknown>() {
   let resolve: (value?: T) => void;
   const promise = new Promise<T>(
-    _resolve => (resolve = _resolve as typeof resolve)
+    (_resolve) => (resolve = _resolve as typeof resolve),
   );
-  // @ts-ignore
-  return { resolve, promise };
+  return { resolve: resolve!, promise };
 }

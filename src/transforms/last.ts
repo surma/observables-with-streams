@@ -11,9 +11,9 @@
  * limitations under the License.
  */
 
-import { external, EOF } from "../sources/external.js";
-import { Transform } from "../types.js";
-import { extractLast, discard } from "../sinks/index.js";
+import { EOF, external } from "../sources/external.ts";
+import { Transform } from "../types.ts";
+import { extractLast } from "../sinks/index.ts";
 
 /**
  * Returns a `Transform` that emits the last item in an observable.
@@ -26,10 +26,10 @@ export function last<T>(): Transform<T> {
   const { readable, writable } = new TransformStream<T, T>(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   const { observable, next } = external<T>();
-  (async function() {
+  (async function () {
     const first = await extractLast(readable);
     next(first);
     next(EOF);

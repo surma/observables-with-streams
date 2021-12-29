@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Creates an observable from a promise, that emits exactly one value when
@@ -27,8 +27,8 @@ export function fromPromise<T>(p: Promise<T>): Observable<T> {
       async start(controller) {
         controller.enqueue(await p);
         controller.close();
-      }
+      },
     },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }
