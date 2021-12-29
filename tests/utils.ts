@@ -41,3 +41,13 @@ export function waitTask() {
 export function waitMs(ms = 5) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+if (globalThis.ReadableStream === undefined) {
+  const streams = await import("stream/web");
+  // @ts-ignore no typings for "stream/web"
+  globalThis.ReadableStream = streams.ReadableStream;
+  // @ts-ignore no typings for "stream/web"
+  globalThis.WritableStream = streams.WritableStream;
+  // @ts-ignore no typings for "stream/web"
+  globalThis.TransformStream = streams.TransformStream;
+}

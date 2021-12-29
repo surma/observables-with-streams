@@ -5,9 +5,11 @@ import { minify } from "https://esm.sh/terser@5.10.0";
 await build({
   entryPoints: ["./src/index.ts"],
   outDir: "./dist",
-  test: false,
+  testPattern: "./tests/**/*.ts",
   cjs: false,
-  shims: {},
+  shims: {
+    deno: "dev",
+  },
   package: {
     // package.json properties
     name: "observables-with-streams",
