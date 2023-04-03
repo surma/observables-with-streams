@@ -11,10 +11,9 @@
  * limitations under the License.
  */
 
-import { Observable, Transform } from "../types.js";
-import { externalPromise } from "../utils.js";
-import { map } from "./map.js";
-import { switchAll } from "./switch-all.js";
+import { Observable, Transform } from "../types.ts";
+import { map } from "./map.ts";
+import { switchAll } from "./switch-all.ts";
 
 /**
  * Converts each emitted item to an observable, producing values only
@@ -29,10 +28,10 @@ export function switchMap<T, S>(f: (v: T) => Observable<S>): Transform<T, S> {
   const { readable, writable } = new TransformStream<T, T>(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   return {
     writable,
-    readable: readable.pipeThrough(map(f)).pipeThrough(switchAll())
+    readable: readable.pipeThrough(map(f)).pipeThrough(switchAll()),
   };
 }

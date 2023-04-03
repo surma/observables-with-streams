@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { amb } from "./amb.js";
+import { Observable } from "../types.ts";
+import { amb } from "./amb.ts";
 
 /**
  * Alias for {@link amb}.

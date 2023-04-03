@@ -11,22 +11,23 @@
  * limitations under the License.
  */
 
-import { fromIterable, zip, collect } from "../../src/index.js";
+import { collect, fromIterable, zip } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("zip()", function() {
-  Mocha.it("zips multiple observables", async function() {
+Deno.test("zip()", async function (t) {
+  await t.step("zips multiple observables", async function () {
     const list = await collect(
       zip<string | number>(
         fromIterable([1, 2, 3, 4]),
         fromIterable(["one", "two", "three", "four"]),
-        fromIterable(["eins", "zwei", "drei"])
-      )
+        fromIterable(["eins", "zwei", "drei"]),
+      ),
     );
 
-    chai.expect(list).to.deep.equal([
+    assertEquals(list, [
       [1, "one", "eins"],
       [2, "two", "zwei"],
-      [3, "three", "drei"]
+      [3, "three", "drei"],
     ]);
   });
 });

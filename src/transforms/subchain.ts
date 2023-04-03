@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable, Transform } from "../types.js";
+import { Observable, Transform } from "../types.ts";
 
 /**
  * Returns a `Transform` that applies `f` to the observable.
@@ -44,15 +44,15 @@ import { Observable, Transform } from "../types.js";
  * @returns Transform that applies `f` to the observable.
  */
 export function subchain<S, T>(
-  f: (x: Observable<S>) => Observable<T>
+  f: (x: Observable<S>) => Observable<T>,
 ): Transform<S, T> {
   const { readable, writable } = new TransformStream(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   return {
     writable,
-    readable: f(readable)
+    readable: f(readable),
   };
 }

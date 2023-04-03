@@ -10,27 +10,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromNext, EOF } from "../../src/index.js";
+import { EOF, fromNext } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("fromNext()", function() {
-  Mocha.it("emits when next() is called", async function() {
-    const observable = fromNext(next => {
+Deno.test("fromNext()", async function (t) {
+  await t.step("emits when next() is called", async function () {
+    const observable = fromNext((next) => {
       next(1);
       next(2);
       next(EOF);
     });
     const reader = observable.getReader();
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 1,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 2,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: undefined,
-      done: true
+      done: true,
     });
   });
 });

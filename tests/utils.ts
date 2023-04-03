@@ -10,7 +10,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export async function waitTicks(n: number = 5) {
+export {
+  assert,
+  assertEquals,
+} from "https://deno.land/std@0.118.0/testing/asserts.ts";
+
+export async function waitTicks(n = 5) {
   for (let i = 0; i < n; i++) {
     await 0;
   }
@@ -22,7 +27,7 @@ port2.start();
 export function waitTask() {
   const localId = uid++;
   port1.postMessage(localId);
-  return new Promise<null>(resolve => {
+  return new Promise<null>((resolve) => {
     port2.addEventListener("message", function f(ev) {
       if (ev.data !== localId) {
         return;
@@ -34,5 +39,15 @@ export function waitTask() {
 }
 
 export function waitMs(ms = 5) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+if (globalThis.ReadableStream === undefined) {
+  const streams = await import("stream/web");
+  // @ts-ignore no typings for "stream/web"
+  globalThis.ReadableStream = streams.ReadableStream;
+  // @ts-ignore no typings for "stream/web"
+  globalThis.WritableStream = streams.WritableStream;
+  // @ts-ignore no typings for "stream/web"
+  globalThis.TransformStream = streams.TransformStream;
 }

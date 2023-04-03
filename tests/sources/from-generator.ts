@@ -10,26 +10,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromGenerator } from "../../src/index.js";
+import { fromGenerator } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("fromGenerator()", function() {
-  Mocha.it("works with generators", async function() {
-    const observable = fromGenerator(function*() {
+Deno.test("fromGenerator()", async function (t) {
+  await t.step("works with generators", async function () {
+    const observable = fromGenerator(function* () {
       yield 1;
       yield 2;
     });
     const reader = observable.getReader();
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 1,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 2,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: undefined,
-      done: true
+      done: true,
     });
   });
 });

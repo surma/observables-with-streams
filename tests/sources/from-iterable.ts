@@ -10,23 +10,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable } from "../../src/index.js";
+import { fromIterable } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("fromIterable()", function() {
-  Mocha.it("emits all items", async function() {
+Deno.test("fromIterable()", async function (t) {
+  await t.step("emits all items", async function () {
     const observable = fromIterable([1, 2]);
     const reader = observable.getReader();
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 1,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 2,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: undefined,
-      done: true
+      done: true,
     });
   });
 });

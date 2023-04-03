@@ -10,13 +10,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, discard } from "../../src/index.js";
+import { discard, fromIterable } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("discard()", function() {
-  Mocha.it("calls a function for each value", async function() {
+Deno.test("discard()", async function (t) {
+  await t.step("calls a function for each value", async function () {
     const iterable = [1, 2, 3, 4];
     const result: number[] = [];
-    await fromIterable(iterable).pipeTo(discard(v => result.push(v)));
-    chai.expect(result).to.deep.equal(iterable);
+    await fromIterable(iterable).pipeTo(discard((v) => result.push(v)));
+    assertEquals(result, iterable);
   });
 });

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable, Transform } from "../types.js";
+import { Observable, Transform } from "../types.ts";
 
 /**
  * Collects items from the original observable into buffers until the
@@ -45,9 +45,9 @@ export function buffer<T>(notifier: Observable<unknown>): Transform<T, T[]> {
       },
       transform(chunk) {
         buffer.push(chunk);
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

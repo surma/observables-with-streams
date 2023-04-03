@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Transform, Observable } from "../types.js";
-import { merge } from "../combiners/merge.js";
+import { Observable, Transform } from "../types.ts";
+import { merge } from "../combiners/merge.ts";
 
 /**
  * Merges another observable by emitting all items from both the original
@@ -28,10 +28,10 @@ export function mergeWith<S, T>(other: Observable<T>): Transform<S, S | T> {
   const { readable, writable } = new TransformStream(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   return {
     writable,
-    readable: merge(readable, other)
+    readable: merge(readable, other),
   };
 }

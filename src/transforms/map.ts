@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Returns a `Transform` with the results of applying the given function
@@ -28,9 +28,9 @@ export function map<S, T>(f: (x: S) => T | Promise<T>): Transform<S, T> {
     {
       async transform(chunk, controller) {
         controller.enqueue(await f(chunk));
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

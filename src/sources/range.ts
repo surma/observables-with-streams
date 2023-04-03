@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { external, EOF } from "./external.js";
+import { Observable } from "../types.ts";
+import { EOF, external } from "./external.ts";
 
 /**
  * Creates an observable that emits numbers from `start` to `end`.

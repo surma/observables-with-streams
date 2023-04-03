@@ -10,14 +10,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, distinct, collect } from "../../src/index.js";
+import { collect, distinct, fromIterable } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("distinct()", function() {
-  Mocha.it("discards sequences of equal items", async function() {
+Deno.test("distinct()", async function (t) {
+  await t.step("discards sequences of equal items", async function () {
     const list = await collect(
-      fromIterable([1, 1, 2, 1, 2, 2, 2, 2, 3]).pipeThrough(distinct())
+      fromIterable([1, 1, 2, 1, 2, 2, 2, 2, 3]).pipeThrough(distinct()),
     );
 
-    chai.expect(list).to.deep.equal([1, 2, 1, 2, 3]);
+    assertEquals(list, [1, 2, 1, 2, 3]);
   });
 });

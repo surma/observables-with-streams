@@ -1,12 +1,28 @@
 # Observables with Streams
 
-A library for observables built with [WHATWG streams](https://streams.spec.whatwg.org). This library is inspired by [ReactiveX’s operators](http://reactivex.io/documentation/operators.html) and implements a subset of them using [streams](https://streams.spec.whatwg.org).
+A library for observables built with
+[WHATWG streams](https://streams.spec.whatwg.org). This library is inspired by
+[ReactiveX’s operators](http://reactivex.io/documentation/operators.html) and
+implements a subset of them using [streams](https://streams.spec.whatwg.org).
+
+Importing using NPM:
 
 ```
 npm install --save observables-with-streams
 ```
 
-The goal of this library is to implement observables making as much use of the platform as possible and being highly tree-shakeable.
+Or directlu the browser / Deno:
+
+```js
+// JS:
+import * as ows from "https://unpkg.com/observables-with-streams@0.6.1/dist/esm/index.js";
+
+// TS (Deno):
+import * as ows from "https://deno.land/x/observables-with-streams/src/index.ts";
+```
+
+The goal of this library is to implement observables making as much use of the
+platform as possible and being highly tree-shakeable.
 
 ## Example
 
@@ -45,13 +61,23 @@ The goal of this library is to implement observables making as much use of the p
 
 ## Documentation
 
-The (somewhat lacking) documentation for this library is hosted at https://observables-with-streams.surma.technology
+You can view docs on:
+https://doc.deno.land/https://raw.githubusercontent.com/surma/observables-with-streams/28c55be6d855780c677fd1f4ba975f4d3144891d/src/index.ts
 
 ## Caveats
 
-While most browsers have [partial support of streams](https://caniuse.com/#feat=streams) in stable, this library makes heavy use of [TransformStreams](https://streams.spec.whatwg.org/#ts-model), which are currently not well supported. Until browsers catch up, I can recommend [Mattias Buelens'](https://twitter.com/MattiasBuelens) [web-streams-polyfill](https://npm.im/web-streams-polyfill).
+While most browsers have
+[partial support of streams](https://caniuse.com/#feat=streams) in stable, this
+library makes heavy use of
+[TransformStreams](https://streams.spec.whatwg.org/#ts-model), which are
+currently not well supported. Until browsers catch up, I can recommend
+[Mattias Buelens'](https://twitter.com/MattiasBuelens)
+[web-streams-polyfill](https://npm.im/web-streams-polyfill).
 
-For a good primer about streams, read this [blog post](https://jakearchibald.com/2016/streams-ftw/) by [Jake Archibald](https://twitter.com/jaffathecake/) (he is aware the title hasn’t aged well).
+For a good primer about streams, read this
+[blog post](https://jakearchibald.com/2016/streams-ftw/) by
+[Jake Archibald](https://twitter.com/jaffathecake/) (he is aware the title
+hasn’t aged well).
 
 ---
 

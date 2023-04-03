@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Returns a `Transform` where items are only emitted if `ms` milliseconds
@@ -33,7 +33,7 @@ export function debounce<T>(ms: number): Transform<T> {
         if (timeout > 0) {
           clearTimeout(timeout);
         }
-        timeoutP = new Promise(resolve => {
+        timeoutP = new Promise((resolve) => {
           // @ts-ignore NodeJS types are interfering here
           timeout = setTimeout(() => {
             controller.enqueue(savedChunk);
@@ -44,9 +44,9 @@ export function debounce<T>(ms: number): Transform<T> {
       },
       async flush() {
         await timeoutP;
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

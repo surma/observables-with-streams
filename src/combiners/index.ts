@@ -11,10 +11,10 @@
  * limitations under the License.
  */
 
-export * from "./amb.js";
-export * from "./combine-latest.js";
-export * from "./concat.js";
-export * from "./fork-join.js";
-export * from "./merge.js";
-export * from "./race.js";
-export * from "./zip.js";
+export * from "./amb.ts";
+export * from "./combine-latest.ts";
+export * from "./concat.ts";
+export * from "./fork-join.ts";
+export * from "./merge.ts";
+export * from "./race.ts";
+export * from "./zip.ts";

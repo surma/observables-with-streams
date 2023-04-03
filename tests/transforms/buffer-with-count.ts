@@ -10,12 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, bufferWithCount, collect } from "../../src/index.js";
+import { bufferWithCount, collect, range } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("bufferWithCount()", function() {
-  Mocha.it("splits the stream into chunks", async function() {
+Deno.test("bufferWithCount()", async function (t) {
+  await t.step("splits the stream into chunks", async function () {
     const list = await collect(range(1, 5).pipeThrough(bufferWithCount(2)));
 
-    chai.expect(list).to.deep.equal([[1, 2], [3, 4], [5]]);
+    assertEquals(list, [[1, 2], [3, 4], [5]]);
   });
 });

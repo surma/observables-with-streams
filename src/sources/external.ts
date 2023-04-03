@@ -29,16 +29,16 @@ export function external<T>() {
   let next: NextFunc<T>;
   const observable = new ReadableStream<T>(
     {
-      async start(controller) {
+      start(controller) {
         next = (v: T | typeof EOF) => {
           if (v === EOF) {
             return controller.close();
           }
           controller.enqueue(v);
         };
-      }
+      },
     },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   return { observable, next: next! };
 }

@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { fromIterable } from "./from-iterable.js";
+import { Observable } from "../types.ts";
+import { fromIterable } from "./from-iterable.ts";
 
 type GeneratorFunc<T> = () => IterableIterator<T>;
 

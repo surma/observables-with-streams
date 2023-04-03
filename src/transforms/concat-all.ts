@@ -11,8 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable, Transform } from "../types.js";
-import { externalPromise } from "../utils.js";
+import { Observable, Transform } from "../types.ts";
 
 /**
  * Converts a higher-order Observable into a first-order Observable
@@ -25,7 +24,7 @@ export function concatAll<T>(): Transform<Observable<T>, T> {
   const { readable, writable } = new TransformStream(
     undefined,
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
   return {
     writable: new WritableStream(
@@ -35,10 +34,10 @@ export function concatAll<T>(): Transform<Observable<T>, T> {
         },
         close() {
           writable.getWriter().close();
-        }
+        },
       },
-      { highWaterMark: 1 }
+      { highWaterMark: 1 },
     ),
-    readable
+    readable,
   };
 }

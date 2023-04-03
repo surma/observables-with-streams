@@ -25,3 +25,10 @@ Contributions made by corporations are covered by a different agreement than
 the one above, the
 [Software Grant and Corporate Contributor License Agreement]
 (https://cla.developers.google.com/about/google-corporate).
+
+### Releasing
+
+1. Bump version in build.ts
+2. `make build`
+3. `cd dist && npm publish`
+4. Tag the release in Git (e.g. `git tag v1.0.0`)

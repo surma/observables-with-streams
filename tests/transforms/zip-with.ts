@@ -10,20 +10,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, zipWith, collect } from "../../src/index.js";
+import { collect, fromIterable, zipWith } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("zipWith()", function() {
-  Mocha.it("combines 2 observables", async function() {
+Deno.test("zipWith()", async function (t) {
+  await t.step("combines 2 observables", async function () {
     const list = await collect(
       fromIterable([1, 2, 3]).pipeThrough(
-        zipWith(fromIterable(["a", "b", "c", "d"]))
-      )
+        zipWith(fromIterable(["a", "b", "c", "d"])),
+      ),
     );
 
-    chai.expect(list).to.deep.equal([
+    assertEquals(list, [
       [1, "a"],
       [2, "b"],
-      [3, "c"]
+      [3, "c"],
     ]);
   });
 });

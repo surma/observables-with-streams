@@ -10,26 +10,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, single } from "../../src/index.js";
+import { fromIterable, single } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("single()", function() {
-  Mocha.it(
+Deno.test("single()", async function (t) {
+  await t.step(
     "returns the the item when there is exactly one item",
-    async function() {
+    async function () {
       const item = await single(fromIterable([1]));
-      chai.expect(item).to.equal(1);
-    }
+      assertEquals(item, 1);
+    },
   );
 
-  Mocha.it("throws if no items are emitted", function(done) {
-    single(fromIterable([]))
-      .then(() => done("single() did not throw"))
-      .catch(() => done());
+  await t.step("throws if no items are emitted", function () {
+    return new Promise((resolve, reject) => {
+      single(fromIterable([]))
+        .then(() => reject("single() did not throw"))
+        .catch(() => resolve());
+    });
   });
 
-  Mocha.it("throws if more than one item is emitted", function(done) {
-    single(fromIterable([1, 2]))
-      .then(() => done("single() did not throw"))
-      .catch(() => done());
+  await t.step("throws if more than one item is emitted", function () {
+    return new Promise((resolve, reject) => {
+      single(fromIterable([1, 2]))
+        .then(() => reject("single() did not throw"))
+        .catch(() => resolve());
+    });
   });
 });

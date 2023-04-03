@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable, Transform } from "../types.js";
-import { externalPromise } from "../utils.js";
+import { Observable, Transform } from "../types.ts";
+import { externalPromise } from "../utils.ts";
 
 /**
  * Converts a higher-order Observable into a first-order Observable by
@@ -67,9 +67,9 @@ export function exhaust<T>(): Transform<Observable<T>, T> {
               }
             })();
           }
-        }
+        },
       },
-      { highWaterMark: 0 }
-    )
+      { highWaterMark: 0 },
+    ),
   };
 }

@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Returns a `Transform` that emits the first `n` items from the original
@@ -31,9 +31,9 @@ export function take<T>(n: number): Transform<T> {
         if (--n <= 0) {
           controller.terminate();
         }
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

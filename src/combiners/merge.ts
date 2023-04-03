@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
+import { Observable } from "../types.ts";
 
 /**
  * Merges multiple observables by emitting all items from all the observables.
@@ -25,7 +25,7 @@ export function merge<T>(...os: Array<Observable<T>>): Observable<T> {
   return new ReadableStream<T>(
     {
       async start(controller) {
-        const forwarders = os.map(async o => {
+        const forwarders = os.map(async (o) => {
           const reader = o.getReader();
           while (true) {
             const { value, done } = await reader.read();
@@ -37,8 +37,8 @@ export function merge<T>(...os: Array<Observable<T>>): Observable<T> {
         });
         await Promise.all(forwarders);
         controller.close();
-      }
+      },
     },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

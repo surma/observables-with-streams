@@ -10,12 +10,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromPromise, collect } from "../../src/index.js";
+import { collect, fromPromise } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("fromPromise()", function() {
-  Mocha.it("creates observable", async function() {
-    const observable = fromPromise(new Promise(resolve => resolve(4)));
+Deno.test("fromPromise()", async function (t) {
+  await t.step("creates observable", async function () {
+    const observable = fromPromise(new Promise((resolve) => resolve(4)));
     const list = await collect(observable);
-    chai.expect(list).to.deep.equal([4]);
+    assertEquals(list, [4]);
   });
 });

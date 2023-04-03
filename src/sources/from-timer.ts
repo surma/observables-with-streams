@@ -11,8 +11,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { external } from "./external.js";
+import { Observable } from "../types.ts";
 
 /**
  * Creates an observable that will forever emit `null` every `ms` milliseconds.
@@ -21,7 +20,17 @@ import { external } from "./external.js";
  * @returns New observable that emits null values.
  */
 export function fromTimer(ms: number): Observable<null> {
-  const { next, observable } = external<null>();
-  setInterval(next, ms);
-  return observable;
+  let timer: ReturnType<typeof setInterval> | undefined;
+  return new ReadableStream({
+    start(controller) {
+      timer = setInterval(() => {
+        controller.enqueue(null);
+      }, ms);
+    },
+    cancel() {
+      if (timer !== undefined) {
+        clearInterval(timer);
+      }
+    },
+  });
 }

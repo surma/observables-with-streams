@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { external } from "./external.js";
+import { Observable } from "../types.ts";
+import { external } from "./external.ts";
 
 /**
  * Creates an observable from an `EventTarget`.
@@ -27,9 +27,9 @@ import { external } from "./external.js";
 export function fromEvent<K extends EventTarget, T extends Event = Event>(
   el: K,
   name: string,
-  options?: boolean | AddEventListenerOptions
+  options?: boolean | AddEventListenerOptions,
 ): Observable<T> {
   const { next, observable } = external<T>();
-  el.addEventListener(name, next as any, options);
+  el.addEventListener(name, next as () => void, options);
   return observable;
 }

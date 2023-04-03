@@ -10,26 +10,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { external, EOF } from "../../src/index.js";
+import { EOF, external } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("external()", function() {
-  Mocha.it("emits when next() is called", async function() {
+Deno.test("external()", async function (t) {
+  await t.step("emits when next() is called", async function () {
     const { observable, next } = external<number>();
     next(1);
     next(2);
     next(EOF);
     const reader = observable.getReader();
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 1,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 2,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: undefined,
-      done: true
+      done: true,
     });
   });
 });

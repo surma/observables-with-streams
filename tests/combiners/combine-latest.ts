@@ -10,21 +10,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { external, combineLatest, map, collect, EOF } from "../../src/index.js";
-import { waitTicks } from "../utils.js";
+import { collect, combineLatest, EOF, external, map } from "../../src/index.ts";
+import { assertEquals, waitTicks } from "../utils.ts";
 
-Mocha.describe("combineLatest()", function() {
-  Mocha.it(
+Deno.test("combineLatest()", async function (t) {
+  await t.step(
     "combines the latest values of multiple observables",
-    async function() {
+    async function () {
       const { observable: o1, next: n1 } = external<number>();
       const { observable: o2, next: n2 } = external<number>();
       const { observable: o3, next: n3 } = external<number>();
 
       const list = collect(
         combineLatest(o1, o2, o3).pipeThrough(
-          map(async ([a, b, c]) => a + b + c)
-        )
+          map(async ([a, b, c]) => a + b + c),
+        ),
       );
 
       const steps = [
@@ -43,7 +43,7 @@ Mocha.describe("combineLatest()", function() {
         () => n3(300),
         () => n3(EOF),
         () => n2(50),
-        () => n2(EOF)
+        () => n2(EOF),
       ];
 
       for (const step of steps) {
@@ -51,9 +51,10 @@ Mocha.describe("combineLatest()", function() {
         await waitTicks();
       }
 
-      chai
-        .expect(await list)
-        .to.deep.equal([111, 112, 122, 132, 232, 233, 234, 244, 344, 354]);
-    }
+      assertEquals(
+        await list,
+        [111, 112, 122, 132, 232, 233, 234, 244, 344, 354],
+      );
+    },
   );
 });

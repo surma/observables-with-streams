@@ -10,14 +10,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromIterable, endWith, collect } from "../../src/index.js";
+import { collect, endWith, fromIterable } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("endWidth()", function() {
-  Mocha.it("ends in the given items", async function() {
+Deno.test("endWidth()", async function (t) {
+  await t.step("ends in the given items", async function () {
     const list = await collect(
-      fromIterable([1, 2, 3]).pipeThrough(endWith(4, 5, 6))
+      fromIterable([1, 2, 3]).pipeThrough(endWith(4, 5, 6)),
     );
 
-    chai.expect(list).to.deep.equal([1, 2, 3, 4, 5, 6]);
+    assertEquals(list, [1, 2, 3, 4, 5, 6]);
   });
 });

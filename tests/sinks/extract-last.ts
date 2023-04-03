@@ -10,17 +10,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { range, fromIterable, extractLast } from "../../src/index.js";
+import { extractLast, fromIterable, range } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("extractLast()", function() {
-  Mocha.it("returns the last item", async function() {
+Deno.test("extractLast()", async function (t) {
+  await t.step("returns the last item", async function () {
     const item = await extractLast(range(1, 9));
-    chai.expect(item).to.equal(9);
+    assertEquals(item, 9);
   });
 
-  Mocha.it("throws if no items are emitted", function(done) {
-    extractLast(fromIterable([]))
-      .then(() => done("extractLast() did not throw"))
-      .catch(() => done());
+  await t.step("throws if no items are emitted", function () {
+    return new Promise((resolve, reject) => {
+      extractLast(fromIterable([]))
+        .then(() => reject("extractLast() did not throw"))
+        .catch(() => resolve());
+    });
   });
 });

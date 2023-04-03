@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Observable, Transform } from "../types.js";
-import { externalPromise } from "../utils.js";
+import { Observable, Transform } from "../types.ts";
+import { externalPromise } from "../utils.ts";
 
 /**
  * Converts a higher-order Observable into a first-order Observable
@@ -44,7 +44,7 @@ export function switchAll<T>(): Transform<Observable<T>, T> {
                 break;
               }
               controller.enqueue(value!);
-            } catch (e) {
+            } catch {
               break;
             }
           }
@@ -62,9 +62,9 @@ export function switchAll<T>(): Transform<Observable<T>, T> {
         if (currentReader) {
           await lastInnerDone.promise;
         }
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }

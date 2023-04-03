@@ -10,20 +10,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromEvent, EOF } from "../../src/index.js";
+import { fromEvent } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("fromEvent()", function() {
-  Mocha.it("emits on events", async function() {
+Deno.test("fromEvent()", async function (t) {
+  await t.step("emits on events", async function () {
     const { port1, port2 } = new MessageChannel();
-    const observable = fromEvent<MessagePort, MessageEvent<number>>(port2, "message");
+    const observable = fromEvent<MessagePort, MessageEvent<number>>(
+      port2,
+      "message",
+    );
     port2.start();
     port1.postMessage(1);
     port1.postMessage(2);
     const reader = observable.getReader();
     let msg: MessageEvent<number>;
     msg = (await reader.read()).value!;
-    chai.expect(msg.data).to.equal(1);
+    assertEquals(msg.data, 1);
     msg = (await reader.read()).value!;
-    chai.expect(msg.data).to.equal(2);
+    assertEquals(msg.data, 2);
+    port1.close();
+    port2.close();
   });
 });

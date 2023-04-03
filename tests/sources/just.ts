@@ -10,24 +10,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { just, collect } from "../../src/index.js";
+import { collect, just } from "../../src/index.ts";
+import { assertEquals } from "../utils.ts";
 
-Mocha.describe("just()", function() {
-  Mocha.it("emits just one item", async function() {
+Deno.test("just()", async function (t) {
+  await t.step("emits just one item", async function () {
     const observable = just(1);
     const reader = observable.getReader();
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: 1,
-      done: false
+      done: false,
     });
-    chai.expect(await reader.read()).to.deep.equal({
+    assertEquals(await reader.read(), {
       value: undefined,
-      done: true
+      done: true,
     });
   });
-  Mocha.it("emits a set of items", async function() {
+  await t.step("emits a set of items", async function () {
     const list = await collect(just(1, 2, 3));
 
-    chai.expect(list).to.deep.equal([1, 2, 3]);
+    assertEquals(list, [1, 2, 3]);
   });
 });

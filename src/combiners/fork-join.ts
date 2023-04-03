@@ -11,9 +11,9 @@
  * limitations under the License.
  */
 
-import { Observable } from "../types.js";
-import { zip } from "./zip.js";
-import { last } from "../transforms/last.js";
+import { Observable } from "../types.ts";
+import { zip } from "./zip.ts";
+import { last } from "../transforms/last.ts";
 
 /**
  * When all observables complete, emit the last emitted value from each.
@@ -24,14 +24,14 @@ import { last } from "../transforms/last.js";
  */
 export function forkJoin<T1, T2>(
   o1: Observable<T1>,
-  o2: Observable<T2>
+  o2: Observable<T2>,
 ): Observable<[T1, T2]>;
 export function forkJoin<T1, T2, T3>(
   o1: Observable<T1>,
   o2: Observable<T2>,
-  o3: Observable<T3>
+  o3: Observable<T3>,
 ): Observable<[T1, T2, T3]>;
 export function forkJoin<T>(...os: Array<Observable<T>>): Observable<T[]>;
 export function forkJoin<T>(...os: Array<Observable<T>>): Observable<T[]> {
-  return zip(...os.map(o => o.pipeThrough(last())));
+  return zip(...os.map((o) => o.pipeThrough(last())));
 }

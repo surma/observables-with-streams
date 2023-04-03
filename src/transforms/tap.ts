@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
-import { forEach } from "./for-each.js";
+import { Transform } from "../types.ts";
+import { forEach } from "./for-each.ts";
 
 /**
  * Alias for {@link forEach}.

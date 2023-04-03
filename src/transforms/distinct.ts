@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { Transform } from "../types.js";
+import { Transform } from "../types.ts";
 
 /**
  * Returns a `Transform` where all subsequent repetitions of the same item are
@@ -23,7 +23,7 @@ import { Transform } from "../types.js";
  * @returns Transform that emits some items from the original observable.
  */
 export function distinct<T>(
-  f: (a: T, b: T) => boolean = (a, b) => a === b
+  f: (a: T, b: T) => boolean = (a, b) => a === b,
 ): Transform<T> {
   let last: T;
   let hasLast = false;
@@ -40,9 +40,9 @@ export function distinct<T>(
           controller.enqueue(chunk);
         }
         last = chunk;
-      }
+      },
     },
     { highWaterMark: 1 },
-    { highWaterMark: 0 }
+    { highWaterMark: 0 },
   );
 }
